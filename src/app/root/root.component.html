@@ -1,0 +1,93 @@
+<app-nav></app-nav>
+
+<div class="container">
+    <div class="slider-container">
+        <a *ngFor="let slide of slides" [className]="slide.class" routerLink="/Producto/{{slide.product.description}}-{{slide.product._id}}">
+            <img src="{{slide.url}}" style="width:100%">
+            <!--<div class="slider-content">
+                <h1 class="title has-text-light">
+                Compra fácil 👌
+                </h1>
+                <h2 class="subtitle has-text-light">
+                Paga cuando llegue a tu casa 😎 {{img.index}}
+                </h2>
+            </div>-->
+        </a>
+    </div>
+    <div class="columns is-mobile is-variable is-1-mobile">
+        <div class="column">
+            <div class="notification box is-black has-text-centered">
+                <h1 class="title is-5"> <span class="s-logo"></span> PAGOS CONTRA ENTREGA</h1>
+                <h2 class="subtutle">ENVÍO GRATIS</h2>
+            </div>
+        </div>
+        <div class="column">
+            <div class="notification box is-black has-text-centered">
+                <h1 class="title is-5">PAGOS CONTRA ENTREGA</h1>
+                <h2 class="subtutle">ENVÍO GRATIS</h2>
+            </div>
+        </div>
+        <div class="column">
+            <div class="notification box is-black has-text-centered">
+                <h1 class="title is-5">PAGOS CONTRA ENTREGA</h1>
+                <h2 class="subtutle">ENVÍO GRATIS</h2>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+<!--<section *ngFor="let img of test" class="hero is-light is-medium">
+    <div
+        class="hero-body"
+        [style.background]="'url('+img+')'"
+        [style.background-size]="'cover'"
+        [style.background-position-y]="'center'">
+        <div class="container has-text-centered">
+            <h1 class="title has-text-light">
+            Compra fácil 👌
+            </h1>
+            <h2 class="subtitle has-text-light">
+            Paga cuando llegue a tu casa 😎 {{img}}
+            </h2>
+        </div>
+    </div>
+</section>
+
+The content below is only a placeholder and can be replaced.
+<div style="text-align:center">
+    <h1 class="is-size-1">
+      Welcome to ✨💸💵💵💰!
+    </h1>
+    <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  </div>
+  <h2 class="is-size-2">Here are some links to help you start: </h2>
+  <ul class="is-size-2">
+    <li>
+      <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+    </li>
+    <li>
+      <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
+    </li>
+    <li>
+      <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+    </li>
+  </ul>
+-->
+
+<style>
+    .slider{
+        position: relative;
+        text-align: center;
+        transition: all 200ms ease-in-out
+    }
+    .visuallyhidden{
+        opacity: 0;
+        z-index: -1
+    }
+    .slider .slider-content{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
+</style>

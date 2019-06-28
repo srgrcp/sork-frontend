@@ -1,0 +1,178 @@
+<!------------------------------------------LISTA------------------------------------------>
+<!------------------------------------------LISTA------------------------------------------>
+<div class="container">
+    <div [className]="filter?'srg-hide':''">
+        <h1 class="title">
+            Lista
+            <a (click)="getProducts()" class="is-size-6 has-text-primary">Actualizar</a>
+            <span class="is-size-6 has-text-grey-light is-unselectable"> • </span>
+            <a (click)="filter = true" class="is-size-6 has-text-primary">Filtrar</a>
+        </h1>
+        <div *ngFor="let product of products" class="box notification is-primary">
+            <!--<article class="media">
+                <div class="media-left">
+                <figure class="image is-64x64">
+                    <img src="{{product.image}}" alt="Image">
+                </figure>
+                </div>
+                <div class="media-content">
+                <div class="content">
+                    <p>
+                    <strong>{{product.description}}</strong><small> {{product.ref}}</small>
+                    <br>
+                    <strong>${{product.price}}</strong> {{product.category.name}}, {{product.subcategory.name}}
+                    </p>
+                </div>
+                <div class="buttons has-addons is-right">
+                    <button (click)="edit(product)" class="button is-white is-outlined">Editar</button>
+                    <button (click)="deleteProduct(product)" class="button is-danger is-outlined is-inverted">Eliminar</button>
+                </div>
+                </div>
+            </article>-->
+            <nav class="level is-hidden-mobile is-hidden-tablet-only">
+                <div class="level-left">
+                    <div class="level-item">
+                        <figure class="image is-64x64">
+                            <img style="cursor:pointer" (click)="alert.showImage(product.image)" src="{{product.image}}" alt="Image">
+                        </figure>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
+                    <div>
+                        <p class="heading">Descripción</p>
+                        <p class="subtitle">{{product.description}}</p>
+                    </div>
+                </div>
+                <div *ngIf="product.ref" class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
+                    <div>
+                        <p class="heading">Referencia</p>
+                        <p class="subtitle">{{product.ref}}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
+                    <div>
+                        <p class="heading">Categoría</p>
+                        <p class="subtitle">{{product.category.name}}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
+                    <div>
+                        <p class="heading">Subcategoría</p>
+                        <p class="subtitle">{{product.subcategory.name}}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
+                    <div>
+                        <p class="heading">Marca</p>
+                        <p class="subtitle">{{product.brand.name}}</p>
+                    </div>
+                </div>
+            </nav>
+            <!--MOBILE-->
+            <nav class="level is-mobile is-hidden-desktop">
+                <div class="level-left">
+                    <div class="level-item">
+                        <figure class="image is-64x64">
+                            <img style="cursor:pointer" (click)="alert.showImage(product.image)" src="{{product.image}}" alt="Image">
+                        </figure>
+                    </div>
+                </div>
+                <div style="cursor: pointer" (click)="productDetail(product)" class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Descripción</p>
+                        <p class="subtitle">{{product.description}}</p>
+                    </div>
+                </div>
+            </nav>
+            <nav class="level is-mobile  is-hidden-desktop">
+                <div class="level-left level-item has-text-centered">
+                    <div>
+                        <p class="heading">Categoría</p>
+                        <p class="subtitle">{{product.category.name}}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Subcategoría</p>
+                        <p class="subtitle">{{product.subcategory.name}}</p>
+                    </div>
+                </div>
+                <div class="level-right level-item has-text-centered">
+                    <div>
+                        <p class="heading">Marca</p>
+                        <p class="subtitle">{{product.brand.name}}</p>
+                    </div>
+                </div>
+            </nav>
+            <!--MOBILE-->
+            <div class="buttons has-addons is-centered">
+                <button (click)="edit(product)" class="button is-white is-outlined">Editar</button>
+                <button (click)="deleteProduct(product)" class="button is-danger is-outlined is-inverted">Eliminar</button>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------FILTER------------------------------------------>
+    <!------------------------------------------FILTER------------------------------------------>
+    <div [className]="filter?'box':'srg-hide'">
+        <h1 class="title">Filtrar</h1>
+        <form #filterForm="ngForm" (ngSubmit)="getProducts()">
+            <div class="field">
+                <label for="proddesc" class="label">Descripción</label>
+                <input type="text" name="proddesc" class="input" placeholder="Producto" [(ngModel)]="description">
+            </div>
+            <div class="field">
+                <label for="ref" class="label">Referencia</label>
+                <input type="text" name="ref" class="input" placeholder="Referencia" [(ngModel)]="ref">
+            </div>
+            <div class="field">
+                <label class="label">Categoría</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="category" name="category" [(ngModel)]="category" (change)="categoryChanged()">
+                            <option value="">Seleccionar Categoría</option>
+                            <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Subcategoría</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="subcategory" name="subcategory" [(ngModel)]="subcategory">
+                            <option value="">Seleccionar Subcategoría</option>
+                            <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{subcat.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Marca</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="brand" name="brand" [(ngModel)]="brand">
+                            <option value="">Seleccionar Marca</option>
+                            <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button type="submit" class="button is-primary" [disabled]="false">Aceptar</button>
+                </div>
+                <div class="control">
+                    <button type="button" (click)="filter = false" class="button">Cancelar</button>
+                </div>
+                <div class="control">
+                    <button type="button" (click)="clear()" class="button">Limpiar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <h1 class="title has-text-danger is-uppercase">Falta Paginación</h1>
+</div>
+<!------------------------------------------LISTA------------------------------------------>
+<!------------------------------------------LISTA------------------------------------------>
+
+<app-alert></app-alert>

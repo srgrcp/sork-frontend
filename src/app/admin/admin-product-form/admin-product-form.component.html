@@ -1,0 +1,104 @@
+<h2 class="subtitle">{{edit?'Modificar Producto':'Crear Producto'}} <a class="is-size-6 has-text-primary" (click)="test()">test</a></h2>
+<form #prodForm="ngForm" (ngSubmit)="submit()">
+    <div class="field">
+        <label for="proddesc" class="label">Descripción</label>
+        <input type="text" name="proddesc" class="input" placeholder="Producto" [(ngModel)]="product.description" required>
+    </div>
+    <div class="field">
+        <label for="ref" class="label">Referencia</label>
+        <input type="text" name="ref" class="input" placeholder="Referencia" [(ngModel)]="product.ref">
+    </div>
+    <div class="field">
+        <label for="size" class="label">Tallas</label>
+        <input type="text" name="size" class="input" placeholder="Ej.: 37-43" [(ngModel)]="product.size" required>
+    </div>
+    <div class="field">
+        <label for="cost" class="label">Costo</label>
+        <input type="number" name="cost" class="input" placeholder="Costo" [(ngModel)]="product.cost" required>
+    </div>
+    <div class="field">
+        <label for="price" class="label">Precio</label>
+        <input type="number" name="price" class="input" placeholder="Precio" [(ngModel)]="product.price" required>
+    </div>
+    <div class="field">
+        <label for="image" class="label">Imagen</label>
+        <input type="text" name="image" class="input" placeholder="URL" [(ngModel)]="product.image" required>
+    </div>
+    <div class="field">
+        <label class="label">Seleccionar Categoría</label>
+        <div class="control">
+            <div class="select">
+                <select id="category" name="category" [(ngModel)]="category" (change)="categoryChanged()" required>
+                    <option value="" disabled>Seleccionar Categoría</option>
+                    <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <article *ngIf="category == undefined || category == ''" class="notification is-warning">
+        <p>
+            Debe seleccionar una categoría.
+        </p>
+    </article>
+    <div class="field">
+        <label class="label">Seleccionar Subcategoría</label>
+        <div class="control">
+            <div class="select">
+                <select id="subcategory" name="subcategory" [(ngModel)]="subcategory" (change)="subcategoryChanged()">
+                    <option value="" disabled>Seleccionar Subcategoría</option>
+                    <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{subcat.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <article *ngIf="subcategory == undefined || subcategory == ''" class="notification is-warning">
+        <p>
+            Debe seleccionar una subcategoría.
+        </p>
+    </article>
+    <div class="field">
+        <label class="label">Seleccionar Marca</label>
+        <div class="control">
+            <div class="select">
+                <select id="brand" name="brand" [(ngModel)]="brand" (change)="brandChanged()">
+                    <option value="" disabled>Seleccionar Marca</option>
+                    <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <article *ngIf="brand == undefined || brand == ''" class="notification is-warning">
+        <p>
+            Debe seleccionar una marca.
+        </p>
+    </article>
+    <div class="field">
+        <div class="control">
+            <label class="checkbox">
+                <input name="slide" [(ngModel)]="slide" type="checkbox">
+                Agregar Slide
+            </label>
+        </div>
+    </div>
+    <div *ngIf="slide" class="field">
+        <label for="slideURL" class="label">Slide <small class="has-text-weight-normal"> 1156x420</small> </label>
+        <input type="text" name="slideURL" class="input" placeholder="URL" [(ngModel)]="slideURL.url" required>
+    </div>
+    <div class="field is-grouped is-grouped-right">
+        <div class="control">
+            <button
+            *ngIf="edit"
+            (click)="cancelEdit()"
+            type="button"
+            class="button">Cancelar</button>
+        </div>
+        <div class="control">
+            <button
+                [className]="loading?'button is-primary is-loading':'button is-primary'"
+                [disabled]="!prodForm.form.valid || validateForm()"
+                >{{edit?'Actualizar Producto':'Crear Producto'}}</button>
+        </div>
+    </div>
+</form>
+
+<app-alert></app-alert>

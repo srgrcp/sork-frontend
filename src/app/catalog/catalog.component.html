@@ -1,0 +1,34 @@
+<app-nav (categoryEmitter)="getCategories($event)" (brandEmitter)="getBrands($event)"></app-nav>
+
+<div *ngIf="loaded" class="container srg-btm">
+    <br>
+    <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs" style="margin-left: 0.75rem">
+        <ul>
+            <li><a routerLink="/" >{{title}}</a></li>
+            <li [className]="state=='catalog'?'is-active':''"><a routerLink="/Catalogo">Catálogo</a></li>
+            <li [className]="state=='category'?'is-active':''" *ngIf="state=='category' || state=='subcategory'"><a routerLink="/Catalogo/{{categoryName}}">{{categoryName}}</a></li>
+            <li [className]="state=='subcategory'?'is-active':''" *ngIf="state=='subcategory'"><a routerLink="/Catalogo/{{categoryName}}/{{subcategoryName}}">{{subcategoryName}}</a></li>
+            <li [className]="state=='brand'?'is-active':''" *ngIf="state=='brand'"><a routerLink="/Marcas/{{brandName}}">{{brandName}}</a></li>
+        </ul>
+    </nav>
+
+    <div class="columns is-hidden-mobile">
+        <div class="column is-one-fifth">
+            <h1 class="title">Hello!</h1>
+        </div>
+        <div class="column">
+            <div *ngFor="let x of array;  let i = index" class="columns">
+                <div *ngFor="let product of products.slice(i*3, i*3+3)" class="column is-one-third">
+                    <app-product-tile [product]="product"></app-product-tile>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
+        <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
+            <app-product-tile [product]="product"></app-product-tile>
+        </div>
+    </div>
+</div>

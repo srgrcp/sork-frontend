@@ -1,0 +1,47 @@
+<section class="hero is-dark">
+    <div class="hero-body">
+        <div class="container">
+        <h1 class="title">
+            Admin
+        </h1>
+        <h2 class="subtitle">
+            Login
+        </h2>
+        </div>
+    </div>
+</section>
+<br>
+<div class="columns is-centered">
+    <div class="column is-half">
+        <div class="box">
+            <form #loginForm="ngForm" (ngSubmit)="submit()">
+                <div class="field">
+                    <label class="label" for="username">Nombre de Usuario</label>
+                    <div class="control">
+                        <input class="input" type="text" name="username" [(ngModel)]="username" placeholder="username" #usernamec="ngModel" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="password">Contraseña</label>
+                    <div class="control">
+                        <input class="input" type="password" name="password" [(ngModel)]="password" placeholder="•••••••" #passwordc="ngModel" required>
+                    </div>
+                </div>
+
+                <article *ngIf="loginError" class="message is-danger">
+                    <div class="message-body">
+                        {{loginMessage}}
+                    </div>
+                </article>
+
+                <div class="field is-grouped is-grouped-right">
+                    <div class="control">
+                        <button [className]="loading?'is-loading button is-primary':'button is-primary'" [disabled]="!loginForm.form.valid">Aceptar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

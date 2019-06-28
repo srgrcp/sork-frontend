@@ -1,0 +1,22 @@
+<div *ngIf="alert" class="modal is-active">
+    <div class="modal-background" (click)="alert=false"></div>
+    <div *ngIf="!isImage" class="modal-card">
+        <header class="modal-card-head">
+        <p class="modal-card-title">{{title}}</p>
+        <button class="delete" (click)="alert=false"></button>
+        </header>
+        <section class="modal-card-body">
+        <p>{{content}}</p>
+        </section>
+        <footer class="modal-card-foot">
+        <button [className]="wait? 'button is-primary is-loading':'button is-primary'" (click)="accept()">Aceptar</button>
+        <button *ngIf="action" class="button" (click)="alert=false">Cancelar</button>
+        </footer>
+    </div>
+    <div *ngIf="isImage" class="modal-content">
+        <p class="image is-4by3">
+            <img src="{{image}}">
+        </p>
+    </div>
+    <button class="modal-close is-large" (click)="alert=false"></button>
+</div>

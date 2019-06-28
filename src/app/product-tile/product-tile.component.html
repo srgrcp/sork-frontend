@@ -1,0 +1,26 @@
+<div class="card">
+    <a class="card" routerLink="/Producto/{{getURL()}}">
+        <div class="card-image">
+            <figure class="image is-4by3">
+                <img [src]="product.image" alt="Placeholder image">
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="content">
+                <p class="only-1-line">{{product.description}}</p>
+                <p class="only-1-line"><strong>{{product.brand.name}}</strong></p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<style>
+    .only-1-line{ 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0!important
+    } 
+</style>

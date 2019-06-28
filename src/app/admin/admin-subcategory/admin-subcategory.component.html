@@ -1,0 +1,46 @@
+<h2 class="subtitle">Editar Subcategorías</h2>
+<form #subcatForm="ngForm" (ngSubmit)="submit()">
+    <div class="field">
+        <label class="label">Seleccionar Categoría</label>
+        <div class="control">
+            <div class="select">
+                <select id="category" name="category" [(ngModel)]="category" (change)="categoryChanged()">
+                    <option value="" disabled>Seleccionar Categoría</option>
+                    <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Seleccionar Subcategoría</label>
+        <div class="control">
+            <div class="select">
+                <select id="subcategory" name="subcategory" [(ngModel)]="subcategory" (change)="name=subcategory=='n'? '': getSubcategory(subcategory).name">
+                    <option value="n">Crear Nueva Subcategoría</option>
+                    <option *ngFor="let subc of subcategories" [value]="subc._id">{{subc.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="name" class="label">Nombre</label>
+        <input type="text" name="name" class="input" placeholder="Subcategoría" [(ngModel)]="name" required>
+    </div>
+    <div class="field is-grouped is-grouped-right">
+        <div class="control">
+            <button
+            type="button"
+            (click)="delete()"
+            *ngIf="subcategory!='n'"
+            [className]="loading?'is-loading button is-danger':'button is-danger'">Eliminar</button>
+        </div>
+        <div class="control">
+            <button
+            type="submit"
+            [className]="loading?'is-loading button is-primary':'button is-primary'"
+            [disabled]="!subcatForm.form.valid || category == ''">{{subcategory=='n'? 'Crear Subcategoría': 'Actualizar Subcategoría'}}</button>
+        </div>
+    </div>
+</form>
+
+<app-alert></app-alert>

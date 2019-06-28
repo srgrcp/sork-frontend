@@ -1,0 +1,72 @@
+<section class="hero is-primary is-bold is-uppercase">
+    <div class="hero-body">
+        <div class="container">
+        <h1 class="title">
+            Admin
+        </h1>
+        <h2 class="subtitle">
+            Panel
+        </h2>
+        </div>
+    </div>
+
+    <div class="hero-foot">
+        <div class="tabs is-fullwidth is-boxed">
+            <div class="container">
+                <ul>
+                    <li [className]="tabIndex==0? 'is-active':''">
+                    <a (click)="switchIndex(0)">
+                        <span>Producto</span>
+                    </a>
+                    </li>
+                    <li [className]="tabIndex==1? 'is-active':''">
+                    <a (click)="switchIndex(1)">
+                        <span>Lista</span>
+                    </a>
+                    </li>
+                    <li [className]="tabIndex==2? 'is-active':''">
+                    <a (click)="switchIndex(2)">
+                        <span>Pedidos</span>
+                    </a>
+                    </li>
+                    <li [className]="tabIndex==3? 'is-active':''">
+                    <a (click)="switchIndex(3)">
+                        <span>Documents</span>
+                    </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+
+<div [className]="tabIndex==0?'container srg-btm':'srg-hide'">
+    <h1 class="title">Producto <a class="is-size-6 has-text-primary" (click)="test()">test</a></h1>
+    <div class="columns">
+        <div class="column">
+            <div class="box">
+                <app-admin-product-form (updateProducts)="updateProducts()" [brands]="brands" [categories]="categories"></app-admin-product-form>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box">
+                <app-admin-category (refreshCategories)="getCategoriesAndBrands($event)" [categories]="categories"></app-admin-category>
+            <hr>
+                <app-admin-subcategory (refreshCategories)="getCategoriesAndBrands($event)" [categories]="categories"></app-admin-subcategory>
+            <hr>
+                <app-admin-brand (refreshBrands)="getCategoriesAndBrands($event)" [brands]="brands"></app-admin-brand>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<app-product (updateProducts)="updateProducts()" [className]="tabIndex==0?'':'srg-hide'"></app-product>-->
+<div class="srg-btm">
+    <app-product-list
+    (editProduct)="editProduct($event)"
+    [brands]="brands"
+    [categories]="categories"
+    [className]="tabIndex==1?'':'srg-hide'"
+    ></app-product-list>
+</div>

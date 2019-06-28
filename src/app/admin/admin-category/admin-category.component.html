@@ -1,0 +1,28 @@
+<h2 class="subtitle">Editar Categorías</h2>
+<form #catForm="ngForm" (ngSubmit)="submit()">
+    <div class="field">
+        <label class="label">Seleccionar Categoría</label>
+        <div class="control">
+            <div class="select">
+                <select id="category" name="category" [(ngModel)]="category" (change)="name=category=='n'? '': getCategory(category).name">
+                    <option value="n">Crear Nueva Categoría</option>
+                    <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="name" class="label">Nombre</label>
+        <input type="text" name="name" class="input" placeholder="Categoría" [(ngModel)]="name" required>
+    </div>
+    <div class="field is-grouped is-grouped-right">
+        <div class="control">
+            <button type="button" *ngIf="category!='n'" (click)="delete()" [className]="loading?'button is-danger is-loading':'button is-danger'">Eliminar</button>
+        </div>
+        <div class="control">
+            <button type="submit" [className]="loading?'button is-primary is-loading':'button is-primary'" [disabled]="!catForm.form.valid">{{category=='n'? 'Crear Categoría': 'Actualizar Categoría'}}</button>
+        </div>
+    </div>
+</form>
+
+<app-alert></app-alert>
