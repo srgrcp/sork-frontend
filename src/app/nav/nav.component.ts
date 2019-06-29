@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/
 import { CategoryBrandService } from '../Services/category-brand.service'
 import { Category } from '../interfaces/Category'
 import { Constants } from '../constants'
+import { Router } from "@angular/router"
 
 interface Brand{ _id?:String, name: String }
 
@@ -19,6 +20,8 @@ export class NavComponent implements OnInit {
     scroll: Number = 0
     @Output() categoryEmitter = new EventEmitter<Category[]>()
     @Output() brandEmitter = new EventEmitter<Brand[]>()
+    @Output() searchEmitter = new EventEmitter<String>()
+    query: String = ''
 
     @HostListener("window:scroll", ['$event'])
     scrollEvent($event:Event){
@@ -26,13 +29,24 @@ export class NavComponent implements OnInit {
         //console.log("window scroll: ", scrollOffset);
     }
 
-    constructor(private categoryServices: CategoryBrandService) { }
+    constructor(
+        private categoryServices: CategoryBrandService,
+        private router: Router
+        ) { }
 
     is_active: boolean = false
 
     ngOnInit() {
         this.getCategories()
         this.getBrands()
+    }
+
+    search(){
+        if (this.query == '') return
+        let catalog = this.router.config.find(r => r.path === 'Catalogo')
+        catalog.data = { query: this.query }
+        this.searchEmitter.next(this.query)
+        this.router.navigate(['Catalogo'])
     }
 
     toggle(){

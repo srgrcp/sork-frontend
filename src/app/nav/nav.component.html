@@ -69,14 +69,19 @@
   
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="field has-addons">
-                    <p class="control">
-                        <input class="input" type="text" placeholder="Buscar">
-                    </p>
-                    <p class="control">
-                        <button class="button is-beige-lighter">🔍</button>
-                    </p>
-                </div>
+                <form (ngSubmit)="search()">
+                    <div class="field has-addons">
+                        <p class="control is-hidden-mobile">
+                            <input name="query" [(ngModel)]="query" class="input" type="text" placeholder="Buscar" required>
+                        </p>
+                        <p class="control is-hidden-tablet" style="width: -webkit-fill-available">
+                            <input name="query" [(ngModel)]="query" class="input" type="text" placeholder="Buscar" required>
+                        </p>
+                        <p class="control">
+                            <button type="submit" class="button is-beige-lighter">🔍</button>
+                        </p>
+                    </div>
+                </form>
             </div>
             <div class="navbar-item">
                 <div class="buttons">

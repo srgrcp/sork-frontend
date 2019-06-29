@@ -1,14 +1,18 @@
 <div class="card">
     <a class="card" routerLink="/Producto/{{getURL()}}">
         <div class="card-image">
-            <figure class="image is-4by3">
-                <img [src]="product.image" alt="Placeholder image">
+            <figure class="srg-image-4-3"
+                [style.background]="'url('+product.image+')'"
+                [style.background-position]="'center'"
+                [style.background-size]="'cover'">
+                <!--<img [src]="product.image">-->
             </figure>
         </div>
         <div class="card-content">
             <div class="content">
                 <p class="only-1-line">{{product.description}}</p>
                 <p class="only-1-line"><strong>{{product.brand.name}}</strong></p>
+                <p class="only-1-line">{{product.price | currency: 'COP': '$'}}</p>
             </div>
         </div>
     </a>

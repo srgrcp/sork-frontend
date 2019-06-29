@@ -1,20 +1,60 @@
-<app-nav (categoryEmitter)="getCategories($event)" (brandEmitter)="getBrands($event)"></app-nav>
+<app-nav (searchEmitter)="getProducts($event)" (categoryEmitter)="getCategories($event)" (brandEmitter)="getBrands($event)"></app-nav>
 
 <div *ngIf="loaded" class="container srg-btm">
     <br>
     <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs" style="margin-left: 0.75rem">
         <ul>
             <li><a routerLink="/" >{{title}}</a></li>
-            <li [className]="state=='catalog'?'is-active':''"><a routerLink="/Catalogo">Catálogo</a></li>
-            <li [className]="state=='category'?'is-active':''" *ngIf="state=='category' || state=='subcategory'"><a routerLink="/Catalogo/{{categoryName}}">{{categoryName}}</a></li>
-            <li [className]="state=='subcategory'?'is-active':''" *ngIf="state=='subcategory'"><a routerLink="/Catalogo/{{categoryName}}/{{subcategoryName}}">{{subcategoryName}}</a></li>
-            <li [className]="state=='brand'?'is-active':''" *ngIf="state=='brand'"><a routerLink="/Marcas/{{brandName}}">{{brandName}}</a></li>
+            <li [className]="state[state.length-1]=='catalog'?'is-active':''"><a routerLink="/Catalogo">Catálogo</a></li>
+            <li [className]="state[state.length-1]=='category'?'is-active':''" *ngIf="state.includes('category') || state=='subcategory'"><a routerLink="/Catalogo/{{categoryName}}">{{categoryName}}</a></li>
+            <li [className]="state[state.length-1]=='subcategory'?'is-active':''" *ngIf="state.includes('subcategory')"><a routerLink="/Catalogo/{{categoryName}}/{{subcategoryName}}">{{subcategoryName}}</a></li>
+            <li [className]="state[state.length-1]=='brand'?'is-active':''" *ngIf="state.includes('brand')"><a routerLink="/Marcas/{{brandName}}">{{brandName}}</a></li>
         </ul>
     </nav>
 
+    <div class="notification is-dark level is-mobile">
+        <div class="level-left">
+            <span class="level-item">{{getState()}}</span>
+        </div>
+        <div class="level-right is-hidden-tablet">
+            <button class="level-item button is-primary" (click)="filter = !filter">Filtrar</button>
+        </div>
+    </div>
+
     <div class="columns is-hidden-mobile">
         <div class="column is-one-fifth">
-            <h1 class="title">Hello!</h1>
+            <div class="card">
+                <div style="padding: 0.5rem">
+                    <h1 class="subtitle">Filtrar por</h1>
+                    <form (ngSubmit)="getProducts()">
+                        <label class="label" for="search">Buscar</label>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input [(ngModel)]="query.description" name="search" class="input" type="text" placeholder="Descripción">
+                            </p>
+                            <p class="control">
+                                <button type="submit" class="button is-beige-lighter">🔍</button>
+                            </p>
+                        </div>
+                    </form>
+                    <div class="field">
+                        <label class="label">Tallas</label>
+                        <div class="srg-box">
+                            <div *ngFor="let x of arraySizes; let i = index"  class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" (change)="sizeCheck(i+serverData.size.min)">
+                                    {{i+serverData.size.min}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button (click)="getProducts()" class="button">Aplicar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="column">
             <div *ngFor="let x of array;  let i = index" class="columns">
@@ -25,10 +65,48 @@
         </div>
     </div>
 
-    
-    <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
-        <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
-            <app-product-tile [product]="product"></app-product-tile>
+    <div *ngIf="!filter">
+        <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
+            <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
+                <app-product-tile [product]="product"></app-product-tile>
+            </div>
         </div>
     </div>
+
+    <div [className]="filter?'is-hidden-tablet':'srg-hide'">
+        <div style="padding: 0.5rem">
+            <h1 class="subtitle">Filtrar por</h1>
+            <form (ngSubmit)="getProducts();filter = !filter">
+                <label class="label" for="search">Buscar</label>
+                <div class="field has-addons">
+                    <p class="control" style="width: -webkit-fill-available">
+                        <input [(ngModel)]="query.description" name="search" class="input" type="text" placeholder="Descripción">
+                    </p>
+                    <p class="control">
+                        <button type="submit" class="button is-beige-lighter">🔍</button>
+                    </p>
+                </div>
+            </form>
+            <div class="field">
+                <label class="label">Tallas</label>
+                <div class="srg-box">
+                    <div *ngFor="let x of arraySizes; let i = index"  class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" (change)="sizeCheck(i+serverData.size.min)">
+                            {{i+serverData.size.min}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button (click)="getProducts();filter = !filter" class="button is-primary">Aplicar</button>
+                </div>
+                <div class="control">
+                    <button (click)="filter = !filter" class="button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

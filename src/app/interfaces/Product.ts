@@ -10,4 +10,5 @@ export interface Product {
     subcategory: { _id?: String, name?: String }
     brand: { _id?: String, name?: String }
     slide?: { _id?: String, url?: String }
+    sizes?: Number[]
 }

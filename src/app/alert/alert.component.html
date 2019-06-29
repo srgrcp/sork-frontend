@@ -14,8 +14,11 @@
         </footer>
     </div>
     <div *ngIf="isImage" class="modal-content">
-        <p class="image is-4by3">
-            <img src="{{image}}">
+        <p class="srg-image-4-3"
+            [style.background]="'url('+image+')'"
+            [style.background-position]="'center'"
+            [style.background-size]="'cover'">
+            <!--<img src="{{image}}">-->
         </p>
     </div>
     <button class="modal-close is-large" (click)="alert=false"></button>

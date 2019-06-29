@@ -49,6 +49,7 @@ export class AdminComponent implements OnInit {
             this.subcategoryComponent.categoryChanged(true)
             this.adminProductFormComponent.categoryChanged(true)
         }
+        this.updateProducts()
     }
 
     editProduct(product: Product){

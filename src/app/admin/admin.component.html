@@ -1,12 +1,12 @@
 <section class="hero is-primary is-bold is-uppercase">
-    <div class="hero-body">
+    <div class="hero-body" style="padding: 2rem">
         <div class="container">
-        <h1 class="title">
-            Admin
-        </h1>
-        <h2 class="subtitle">
-            Panel
-        </h2>
+            <a routerLink="/">
+                <img class="s-icon" src="assets/S-logo-rectangle.png">
+            </a>
+            <h1 class="subtitle">
+                <strong>Admin</strong> Panel
+            </h1>
         </div>
     </div>
 
@@ -42,7 +42,7 @@
 <br>
 
 <div [className]="tabIndex==0?'container srg-btm':'srg-hide'">
-    <h1 class="title">Producto <a class="is-size-6 has-text-primary" (click)="test()">test</a></h1>
+    <h1 class="title">Producto <a class="is-size-6 has-text-primary">test</a></h1>
     <div class="columns">
         <div class="column">
             <div class="box">

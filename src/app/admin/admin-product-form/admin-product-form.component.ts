@@ -48,9 +48,9 @@ export class AdminProductFormComponent implements OnInit {
     
     submit(){
         this.loading = true
-        this.product.category = { _id: this.category }
-        this.product.subcategory = { _id: this.subcategory }
-        this.product.brand = { _id: this.brand }
+        this.product.category = this.getCategory(this.category)//{ _id: this.category }
+        this.product.subcategory = this.getSubcategory(<Category>this.product.category, this.subcategory) //{ _id: this.subcategory }
+        this.product.brand = this.getBrand(this.brand) //{ _id: this.brand }
         if (this.slide) this.product.slide = this.slideURL
         if(this.edit){
             this.productServices.updateProduct(this.product).subscribe(res =>{

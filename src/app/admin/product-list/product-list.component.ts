@@ -6,6 +6,16 @@ import { Category } from '../../interfaces/Category'
 
 interface Subcategory{ _id?:String, name: String }
 interface Brand{ _id?:String, name: String }
+interface Query{
+    _id?: String
+    description?: String
+    sizes?: string
+    minPrice?: Number
+    maxPrice?: Number
+    category?: String
+    subcategory?: String
+    brand?: String
+}
 
 @Component({
     selector: 'app-product-list',
@@ -18,11 +28,7 @@ export class ProductListComponent implements OnInit {
     products: Product[]
 
     filter: boolean = false
-    description: string = ''
-    ref: string = ''
-    category: string = ''
-    subcategory: string = ''
-    brand: string = ''
+    query: Query = { description: '', category: '', subcategory: '', brand: '' }
     @Input() categories: Category[]
     subcategories: Subcategory[]
     @Input() brands: Brand[]
@@ -37,11 +43,10 @@ export class ProductListComponent implements OnInit {
     }
 
     clear(){
-        this.description = ''
-        this.ref = ''
-        this.category = ''
-        this.subcategory = ''
-        this.brand = ''
+        this.query.description = ''
+        this.query.category = ''
+        this.query.subcategory = ''
+        this.query.brand = ''
     }
 
     productDetail(product: Product){
@@ -49,8 +54,8 @@ export class ProductListComponent implements OnInit {
                 product.description,
                 `Referencia: ${product.ref}
                 Tallas: ${product.size}
-                Costo: ${product.cost}
-                Precio: ${product.price}
+                Costo: $${product.cost.toLocaleString('COP')}
+                Precio: $${product.price.toLocaleString('COP')}
                 Categoría: ${product.category.name}
                 Subcategoría: ${product.subcategory.name}
                 Marca: ${product.brand.name}`
@@ -59,15 +64,9 @@ export class ProductListComponent implements OnInit {
 
     getProducts(){
         if (this.filter) this.page = 1
-        let query: any = {}
-        if (this.description != '') query.description = this.description
-        if (this.ref != '') query.ref = this.ref
-        if (this.category != '') query.category = this.category
-        if (this.subcategory != '') query.subcategory = this.subcategory
-        if (this.brand != '') query.brand = this.brand
         this.productServices.getProducts(
                 this.page,
-                query
+                this.query
             ).subscribe(res => {
             this.products = res
             if (this.filter) this.filter = false
@@ -89,14 +88,14 @@ export class ProductListComponent implements OnInit {
     }
 
     categoryChanged(){
-        let cat = this.getCategory(this.category)
+        let cat = this.getCategory(this.query.category)
         if (cat == undefined) {
             this.subcategories = undefined
-            this.subcategory = ''
+            this.query.subcategory = ''
             return
         }
         this.subcategories = cat.subcategory
-        this.subcategory = ''
+        this.query.subcategory = ''
     }
 
     getCategory(_id: String){

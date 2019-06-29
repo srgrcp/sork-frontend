@@ -118,17 +118,13 @@
         <form #filterForm="ngForm" (ngSubmit)="getProducts()">
             <div class="field">
                 <label for="proddesc" class="label">Descripción</label>
-                <input type="text" name="proddesc" class="input" placeholder="Producto" [(ngModel)]="description">
-            </div>
-            <div class="field">
-                <label for="ref" class="label">Referencia</label>
-                <input type="text" name="ref" class="input" placeholder="Referencia" [(ngModel)]="ref">
+                <input [(ngModel)]="query.description" type="text" name="proddesc" class="input" placeholder="Busca descripción, referencia, categoría, etc." [(ngModel)]="description">
             </div>
             <div class="field">
                 <label class="label">Categoría</label>
                 <div class="control">
                     <div class="select">
-                        <select id="category" name="category" [(ngModel)]="category" (change)="categoryChanged()">
+                        <select id="category" name="category" [(ngModel)]="query.category" (change)="categoryChanged()">
                             <option value="">Seleccionar Categoría</option>
                             <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
                         </select>
@@ -139,7 +135,7 @@
                 <label class="label">Subcategoría</label>
                 <div class="control">
                     <div class="select">
-                        <select id="subcategory" name="subcategory" [(ngModel)]="subcategory">
+                        <select id="subcategory" name="subcategory" [(ngModel)]="query.subcategory">
                             <option value="">Seleccionar Subcategoría</option>
                             <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{subcat.name}}</option>
                         </select>
@@ -150,7 +146,7 @@
                 <label class="label">Marca</label>
                 <div class="control">
                     <div class="select">
-                        <select id="brand" name="brand" [(ngModel)]="brand">
+                        <select id="brand" name="brand" [(ngModel)]="query.brand">
                             <option value="">Seleccionar Marca</option>
                             <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
                         </select>

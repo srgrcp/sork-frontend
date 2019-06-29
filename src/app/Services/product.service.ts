@@ -39,7 +39,7 @@ export class ProductService {
 
     getProducts(page?: Number, queryObject?: any):Observable<Product[]>{
         let query ='?'
-        Object.entries(queryObject).forEach(([k, v]) => query += query!='?'? `&${k}=${v}`:`${k}=${v}`)
+        Object.entries(queryObject).forEach(([k, v]) => {if (v != '') query += query!='?'? `&${k}=${v}`:`${k}=${v}`})
         if (query == '?') query = ''
         if (page) return this.http.get<Product[]>(`${this.API_URI}/store/products/${page}${query}`)
         return this.http.get<Product[]>(`${this.API_URI}/store/products${query}`)
@@ -59,6 +59,10 @@ export class ProductService {
 
     getSlides():Observable<Slide[]>{
         return this.http.get<Slide[]>(`${this.API_URI}/store/slides`)
+    }
+
+    getData(){
+        return this.http.get(`${this.API_URI}/store/data`)
     }
 
 }
