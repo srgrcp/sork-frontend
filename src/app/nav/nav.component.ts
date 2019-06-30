@@ -25,8 +25,7 @@ export class NavComponent implements OnInit {
 
     @HostListener("window:scroll", ['$event'])
     scrollEvent($event:Event){
-        this.scroll = (<any>$event.srcElement).children[0].scrollTop;
-        //console.log("window scroll: ", scrollOffset);
+        this.scroll = (<any>$event.srcElement).children[0].scrollTop
     }
 
     constructor(

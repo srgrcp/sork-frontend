@@ -18,6 +18,7 @@ interface Query{
     brand?: String
 }
 interface ServerData{ size: { min: number, max: number }, count: Number }
+interface Subcategory{ _id?:String, name: String }
 
 @Component({
     selector: 'app-catalog',
@@ -31,6 +32,7 @@ export class CatalogComponent implements OnInit {
     brandName: String
     state: String[] = []
     categories: Category[]
+    subcategories: Subcategory[]
     brands: Brand[]
     products: Product[]
     page: Number = 1
@@ -105,6 +107,34 @@ export class CatalogComponent implements OnInit {
         }
     }
 
+    changed(){
+        let cat = this.categories.find(c=>c._id==this.query.category)
+        if (cat != undefined)
+            {if (this.categoryName != cat.name) return true}
+        else
+            {if (this.categoryName != undefined) return true}
+        if (this.subcategories != undefined){
+            let sub = this.subcategories.find(s=>s._id==this.query.subcategory)
+            if (sub != undefined)
+                {if (this.subcategoryName != sub.name) return true}
+            else
+                {if (this.subcategoryName != undefined) return true}
+        }
+        else {
+            if (this.subcategoryName != undefined) return true
+        }
+        let br = this.brands.find(b=>b._id==this.query.brand)
+        if (br != undefined)
+            {if (this.brandName != br.name) return true}
+        else
+            {if (this.brandName != undefined) return true}
+        return false
+    }
+
+    getNewURL(){
+        console.log('final',this.changed())
+    }
+
     initQuery(){
         if (this.state.includes('subcategory'))
             this.getSubcategoryID()
@@ -114,13 +144,34 @@ export class CatalogComponent implements OnInit {
             this.getBrandId()
     }
 
+    fillSubcategories(){
+        let cat = this.categories.find(c => c._id == this.query.category)
+        this.subcategories = cat? cat.subcategory: undefined
+        delete this.query.subcategory
+        if (this.query.category == 't') delete this.query.category
+        console.log('fill',this.query.category)
+        console.log('query',this.query)
+    }
+
+    subcategoryChange(){
+        if (this.query.subcategory == 't') delete this.query.subcategory
+        console.log('query',this.query)
+    }
+
+    brandChange(){
+        if (this.query.brand == 't') delete this.query.brand
+        console.log('query',this.query)
+    }
+
     getCategoryId(){
         this.query.category = this.categories.find(c => c.name == this.categoryName)._id
+        this.fillSubcategories()
     }
 
     getSubcategoryID(){
         let cat = this.categories.find(c => c.name == this.categoryName)
         this.query.category = cat._id
+        this.fillSubcategories()
         this.query.subcategory = cat.subcategory.find(s => s.name == this.subcategoryName)._id
     }
 

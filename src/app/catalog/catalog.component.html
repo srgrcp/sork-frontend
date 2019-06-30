@@ -53,6 +53,78 @@
                             <button (click)="getProducts()" class="button">Aplicar</button>
                         </div>
                     </div>
+                    <form class="field" (ngSubmit)="getProducts()">
+                        <label class="label">Rango de Precios</label>
+                        <div class="field has-addons">
+                            <div class="control">
+                                <input [(ngModel)]="query.minPrice" class="input" type="number" name="minprice" placeholder="Mínimo">
+                            </div>
+                            <div class="control">
+                                <a class="button is-static input-color is-borderless">
+                                -
+                                </a>
+                            </div>
+                            <div class="control">
+                                <input [(ngModel)]="query.maxPrice" class="input" type="number" name="maxprice" placeholder="Máximo">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button (click)="getProducts()" class="button" type="submit">Aplicar</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="field">
+                        <label class="label" for="">Categoría</label>
+                        <div class="control is-expanded">
+                            <div class="select is-multiple is-fullwidth">
+                                <select
+                                    [(ngModel)]="query.category"
+                                    class="srg-border has-background-white"
+                                    name="category" size="5" style="overflow:hidden auto;height: 6rem"
+                                    (change)="fillSubcategories()">
+                                    <option value="t">Todas</option>
+                                    <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="">Subcategoría</label>
+                        <div class="control is-expanded">
+                            <div class="select is-multiple is-fullwidth">
+                                <select
+                                    [(ngModel)]="query.subcategory"
+                                    class="srg-border has-background-white"
+                                    name="subcategory" size="5" style="overflow:hidden auto;height: 6rem"
+                                    (change)="subcategoryChange()">
+                                    <option value="t">Todas</option>
+                                    <option *ngFor="let sub of subcategories" [value]="sub._id">{{sub.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="">Marca</label>
+                        <div class="control is-expanded">
+                            <div class="select is-multiple is-fullwidth">
+                                <select
+                                    [(ngModel)]="query.brand"
+                                    class="srg-border has-background-white"
+                                    name="brand" size="5" style="overflow:hidden auto;height: 6rem"
+                                    (change)="brandChange()">
+                                    <option value="t">Todas</option>
+                                    <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button (click)="getProducts()" class="button">Aplicar</button>
+                        </div>
+                    </div>
+                    <a (click)="getNewURL()">test</a>
                 </div>
             </div>
         </div>
