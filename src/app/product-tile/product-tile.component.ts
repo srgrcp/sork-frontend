@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
 import { Product } from '../interfaces/Product'
 
 @Component({
@@ -9,6 +9,11 @@ import { Product } from '../interfaces/Product'
 export class ProductTileComponent implements OnInit {
 
     @Input() product: Product
+    @Input() admin: boolean = false
+    @Output() editProduct = new EventEmitter<Product>()
+    @Output() deleteProduct = new EventEmitter<Product>()
+    @Output() detail = new EventEmitter<Product>()
+    active: boolean = false
 
     constructor() { }
 

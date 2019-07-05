@@ -104,12 +104,20 @@ $alignments: ('centered': 'center', 'justified': 'justify', 'left': 'left', 'rig
       color: darken($color, 10%) !important
   .has-background-#{$name}
     background-color: $color !important
+    &.is-bold
+      $gradient-top-left: darken(saturate(adjust-hue($color, -10deg), 10%), 10%)
+      $gradient-bottom-right: lighten(saturate(adjust-hue($color, 10deg), 5%), 5%)
+      background-image: linear-gradient(141deg, $gradient-top-left 0%, $color 71%, $gradient-bottom-right 100%) !important
 
 @each $name, $shade in $shades
   .has-text-#{$name}
     color: $shade !important
   .has-background-#{$name}
     background-color: $shade !important
+    &.is-bold
+      $gradient-top-left: darken(saturate(adjust-hue($shade, -10deg), 10%), 10%)
+      $gradient-bottom-right: lighten(saturate(adjust-hue($shade, 10deg), 5%), 5%)
+      background-image: linear-gradient(141deg, $gradient-top-left 0%, $shade 71%, $gradient-bottom-right 100%) !important
 
 .has-text-weight-light
   font-weight: $weight-light !important

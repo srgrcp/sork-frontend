@@ -1,0 +1,143 @@
+<app-nav (sectionEmitter)="sections = $event" (brandEmitter)="brands = $event"></app-nav>
+
+<div *ngIf="loaded" class="container srg-btm">
+    <br>
+    <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs" style="margin-left: 0.75rem">
+        <ul>
+            <li><a routerLink="/" >{{title}}</a></li>
+            <li><a routerLink="/Catalogo">Catálogo</a></li>
+            <li><a routerLink="/{{product.sectionName}}">{{product.sectionName}}</a></li>
+            <li><a routerLink="/{{product.sectionName}}/{{product.categoryName}}">{{product.categoryName}}</a></li>
+            <li><a routerLink="/{{product.sectionName}}/{{product.categoryName}}/{{product.subcategoryName}}">{{product.subcategoryName}}</a></li>
+            <li><a routerLink="/{{product.sectionName}}/{{product.categoryName}}/{{product.subcategoryName}}/Marcas/{{product.brandName}}">{{product.brandName}}</a></li>
+            <li class="is-active"><a>{{product.description}}</a></li>
+        </ul>
+    </nav>
+
+    <div class="columns">
+        <div class="column is-half">
+            <figure class="srg-image-4-3"
+                [style.background]="'url('+product.image+')'"
+                [style.background-position]="'center'"
+                [style.background-size]="'cover'">
+                <!--<img [src]="product.image">-->
+            </figure>
+        </div>
+        <div class="column">
+            <h1 class="title">{{product.brandName}}</h1>
+            <h2 class="subtitle">{{product.description}}</h2><br>
+            <h1 class="title">{{product.price | currency: 'COP': '$ '}}</h1>
+            <div class="field">
+                <label class="label">Talla <a href="{{url}}#Tallas">Cómo elegir talla.</a></label>
+                <div class="control select">
+                    <select [(ngModel)]="size" name="size" id="size">
+                        <option value="" disabled>Seleccionar Talla</option>
+                        <option *ngFor="let s of product.sizes" [value]="s">{{s}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="buttons are-medium">
+                <button (click)="addCartItem()" class="button is-rounded is-primary">🛒 Agregar al carrito</button>
+                <button class="button is-rounded is-primary is-outlined">🏷 Comprar Ahora</button>
+            </div>
+            <div class="notification is-warning"><h2 class="subtitle">Compra ahora y paga cuando el producto llegue a tu casa!</h2></div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <a id="Tallas" class="hash-link"></a>
+            <h2 class="subtitle"><a href="{{url}}#Tallas">#</a> Cómo elegir talla.</h2>
+            <table class="table table-text-centered is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>EUR</th>
+                        <th>Longitud del pie (cm)</th>
+                        <th>US</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>EUR</th>
+                        <th>Longitud del pie (cm)</th>
+                        <th>US</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td>37</td>
+                        <td>24</td>
+                        <td>6½</td>
+                    </tr>
+                    <tr>
+                        <td>37½</td>
+                        <td>24.5</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>38</td>
+                        <td>25</td>
+                        <td>7½</td>
+                    </tr>
+                    <tr>
+                        <td>38½</td>
+                        <td>25.5</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td>26</td>
+                        <td>8½</td>
+                    </tr>
+                    <tr>
+                        <td>40</td>
+                        <td>26.5</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>40½</td>
+                        <td>27.25</td>
+                        <td>9½</td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td>28</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>41½</td>
+                        <td>28.5</td>
+                        <td>10½</td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td>29</td>
+                        <td>11</td>
+                    </tr>
+                    <tr>
+                        <td>42½</td>
+                        <td>29.5</td>
+                        <td>11½</td>
+                    </tr>
+                    <tr>
+                        <td>43</td>
+                        <td>30</td>
+                        <td>12</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <h2 class="subtitle">Productos Relacionados</h2>
+            <div style="height: 550px;overflow: auto;padding: 0 0.75rem">
+                <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile">
+                    <div *ngFor="let prod of products.slice(i*2, i*2+2)" class="column is-half">
+                            <a routerLink="/Producto/{{getURL(prod)}}"><app-product-tile [product]="prod"></app-product-tile></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer [brands]="brands" [sections]="sections"></app-footer>

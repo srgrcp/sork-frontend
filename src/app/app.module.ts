@@ -18,6 +18,11 @@ import { AdminSubcategoryComponent } from './admin/admin-subcategory/admin-subca
 import { AdminBrandComponent } from './admin/admin-brand/admin-brand.component';
 import { ProductTileComponent } from './product-tile/product-tile.component';
 import { CatalogComponent } from './catalog/catalog.component';
+import { ProductPageComponent } from './product-page/product-page.component';
+import { AdminSectionComponent } from './admin/admin-section/admin-section.component';
+import { FooterComponent } from './footer/footer.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -34,13 +39,17 @@ import { CatalogComponent } from './catalog/catalog.component';
     AdminSubcategoryComponent,
     AdminBrandComponent,
     ProductTileComponent,
-    CatalogComponent
+    CatalogComponent,
+    ProductPageComponent,
+    AdminSectionComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [Title],
   bootstrap: [AppComponent]

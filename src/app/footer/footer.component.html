@@ -1,0 +1,41 @@
+<footer class="has-background-link is-bold" style="padding: 3rem 1.5rem">
+    <div class="container">
+        <div class="space-between-columns">
+            <div class="nocolumn" style="height: 100%">
+                <div>
+                    <a routerLink="/" class="subtitle level footer-link">
+                        <span class="level-left icon is-medium"><img class="level-item" src="assets/S-logo-dark.svg" alt=""></span>
+                        <span class="level-item level-left has-text-weight-bold"> {{title}}</span>
+                    </a>
+                </div><br>
+                <p class="footer-link"><a class="is-size-6">¿Quiénes Somos?</a></p>
+                <p class="footer-link"><a class="is-size-6">Contacto</a></p><br>
+                <!--<p class=""><a class="is-size-6 footer-link"><i class="fab fa-facebook-square"></i><span> /{{title}}</span></a></p>
+                <p class=""><a class="is-size-6 footer-link"><i class="fab fa-instagram"></i><span> @{{title}}</span></a></p>
+                <p class=""><a class="is-size-6 footer-link"><i class="fab fa-whatsapp"></i><span> Escribenos</span></a></p>
+                <p class=""><a class="is-size-6 footer-link"><i class="fab fa-google-play"></i><span> Descarga nuestra app</span></a></p>-->
+            </div>
+            <div *ngFor="let sec of sections" class="nocolumn" style="height: 100%">
+                <p class="footer-link"><a routerLink="/{{sec.name}}" class="subtitle is-uppercase has-text-weight-bold is-6">{{sec.name}}</a></p>
+                <div *ngFor="let cat of sec.category">
+                    <p class="footer-link"><a [routerLink]="['/'+sec.name, cat.name]" class="subtitle has-text-weight-semibold is-6">{{cat.name}}</a></p>
+                    <div *ngFor="let sub of cat.subcategory">
+                        <p class="footer-link"><a [routerLink]="['/'+sec.name, cat.name, sub.name]" class="is-size-6">{{sub.name}}</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="nocolumn">
+                <p class="footer-link is-uppercase has-text-weight-bold is-6">Marcas</p>
+                <div *ngFor="let br of brands">
+                    <p class="footer-link"><a [routerLink]="['/Marcas', br.name]" class="is-size-6">{{br.name}}</a></p>
+                </div><br>
+                <p>
+                    <a style="margin-right: 1rem" class="is-size-3 footer-link"><i class="fab fa-facebook-square"></i></a>
+                    <a style="margin-right: 1rem" class="is-size-3 footer-link"><i class="fab fa-instagram"></i></a>
+                    <a style="margin-right: 1rem" class="is-size-3 footer-link"><i class="fab fa-whatsapp"></i></a>
+                </p>
+            </div>
+        </div><br>
+        <p class="has-text-right has-text-weight-semibold is-size-7">Copyright © 2019 {{title}}</p>
+    </div>
+</footer>

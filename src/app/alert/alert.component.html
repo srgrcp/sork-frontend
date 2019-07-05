@@ -1,12 +1,12 @@
 <div *ngIf="alert" class="modal is-active">
     <div class="modal-background" (click)="alert=false"></div>
     <div *ngIf="!isImage" class="modal-card">
-        <header class="modal-card-head">
-        <p class="modal-card-title">{{title}}</p>
-        <button class="delete" (click)="alert=false"></button>
+        <header class="modal-card-head only-1-line">
+            <p class="modal-card-title only-1-line">{{title}}</p>
+            <!--<button class="delete" (click)="alert=false"></button>-->
         </header>
         <section class="modal-card-body">
-        <p>{{content}}</p>
+        <p [innerHTML]="content"></p>
         </section>
         <footer class="modal-card-foot">
         <button [className]="wait? 'button is-primary is-loading':'button is-primary'" (click)="accept()">Aceptar</button>
@@ -23,3 +23,14 @@
     </div>
     <button class="modal-close is-large" (click)="alert=false"></button>
 </div>
+
+<style>
+    .only-1-line{ 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0!important
+    } 
+</style>

@@ -1,60 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
-
-//@import url('https://fonts.googleapis.com/css?family=Handlee&display=swap');
-//$family-sans-serif: 'Handlee', cursive;
 
 @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
-$family-sans-serif: 'Questrial', sans-serif;
+$family-sans-serif: 'Questrial', "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
 
-$beige-lighter: #EFF0EF;
-$input-background-color: $beige-lighter;
+@import "sass/srg-colors.sass"
+
+$beige-lighter: #f2f4f3//#EFF0EF;
+$color-input: #EFF0EF
+
+
+//$input-background-color: $light-1//$beige-lighter;
 $input-shadow: none;
-$input-border-color: transparent;
+//$input-border-color: transparent;
 $control-border-width: 2px;
 
-$primary: #7445ad;
+$primary: #7445ad
+//$link: #944cc0//00d16c//#07e077
+//$primary: $violet-1
+//$link: $c64-purple
+$link: #ffdd57
 
-$dropdown-item-hover-color: #fff;
-$dropdown-item-hover-background-color: $primary;
-$dropdown-item-active-background-color: $primary;
+$dropdown-item-hover-color: $d;
+$dropdown-item-hover-background-color: $link;
+//$dropdown-item-active-background-color: $primary;
+$tabs-link-active-border-bottom-color: $primary
+$tabs-link-active-color: $primary
+$tabs-toggle-link-active-background-color: $primary
+$tabs-toggle-link-active-border-color: $primary
 
+$menu-item-active-background-color: $link
+$menu-item-radius: 50px
+$menu-item-active-color: $d
+
+$radius: 0
+$radius-small: 0
 $container-offset: 200px;
 $body-size: 14px
 
-$custom-colors: ("beige-lighter": ($beige-lighter, #363636))
+//$custom-colors: ("beige-lighter": ($beige-lighter, #363636), "color-input": ($color-input, #363636))
 
+@import url('https://use.fontawesome.com/releases/v5.9.0/css/all.css')
+@import "cool-checkboxes.css"
 @import "bulma.sass"
+//@import "sass/preloader.sass"
+@import "sass/srg-utils.sass"
 
-body
-    overflow: hidden
-.input-color
-    background-color: $beige-lighter!important
-.srg-hide
-    display: none
-.srg-btm
-    margin-bottom: 1.25rem
-p
-    white-space: pre-line
-.shadow
-    box-shadow: 0 1px 3px 2px rgba(0,0,0,.15)
-.s-icon
-    height: 4rem
-.srg-box
-    border-style: solid
-    border-width: 1px
-    border-color: $grey-lighter
-    padding: 0.25rem
-    height: 150px
-    overflow: auto
-.srg-border
-    border-style: solid!important
-    border-width: 1px!important
-    border-color: $grey-lighter!important
-    border-radius: 0!important
-.srg-image-4-3
-    display: block
-    position: relative
-    padding-top: 75%
-    overflow: hidden
-.is-borderless
-    border: none
+.navbar-menu
+    >div
+        >a
+            font-weight: bold !important
+            //color: $primary !important
+    >div
+        >div
+            >a
+                //color: $primary !important
+                font-weight: bold !important

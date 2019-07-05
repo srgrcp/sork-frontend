@@ -1,174 +1,235 @@
-<!------------------------------------------LISTA------------------------------------------>
-<!------------------------------------------LISTA------------------------------------------>
 <div class="container">
-    <div [className]="filter?'srg-hide':''">
-        <h1 class="title">
-            Lista
-            <a (click)="getProducts()" class="is-size-6 has-text-primary">Actualizar</a>
-            <span class="is-size-6 has-text-grey-light is-unselectable"> • </span>
-            <a (click)="filter = true" class="is-size-6 has-text-primary">Filtrar</a>
-        </h1>
-        <div *ngFor="let product of products" class="box notification is-primary">
-            <!--<article class="media">
-                <div class="media-left">
-                <figure class="image is-64x64">
-                    <img src="{{product.image}}" alt="Image">
-                </figure>
+
+    <div class="level is-mobile" style="padding: 1rem">
+        <div class="level-left">
+            <span class="level-item is-uppercase title is-6">Lista de productos</span>
+        </div>
+        <div class="level-right is-hidden-tablet">
+            <button class="level-item button is-primary" (click)="filter = !filter">{{filter?'Cancelar':'Filtrar'}}</button>
+        </div>
+    </div>
+
+    <div class="columns is-hidden-mobile">
+        <div class="column is-one-fifth">
+            <div class="card" style="padding: 0.5rem">
+                <h1 class="subtitle">Filtrar por</h1>
+                <form class="field" (ngSubmit)="getProducts()">
+                    <label class="label" for="search">Buscar</label>
+                    <div class="field has-addons">
+                        <p class="control">
+                            <input [(ngModel)]="query.description" name="search" class="input" type="text" placeholder="Descripción">
+                        </p>
+                        <p class="control">
+                            <button type="submit" class="button is-beige-lighter">🔍</button>
+                        </p>
+                    </div>
+                </form>
+                <form class="field" (ngSubmit)="getProducts()">
+                    <label class="label">Rango de Precios</label>
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input [(ngModel)]="query.minPrice" class="input" type="number" name="minprice" placeholder="Mínimo">
+                        </div>
+                        <div class="control">
+                            <a class="button is-static input-color is-borderless">
+                            -
+                            </a>
+                        </div>
+                        <div class="control">
+                            <input [(ngModel)]="query.maxPrice" class="input" type="number" name="maxprice" placeholder="Máximo">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button" type="submit">Aplicar</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="field">
+                    <label class="label">Sección</label>
+                    <ul class="menu-list">
+                        <li><a [class.is-active]="query.section=='t' || query.section==undefined"
+                            (click)="query.section='t';fillCategories()">Todo</a></li>
+                        <li *ngFor="let sec of sections">
+                            <a [class.is-active]="query.section==sec._id"
+                            (click)="query.section=sec._id;fillCategories()">{{sec.name}}</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="media-content">
-                <div class="content">
-                    <p>
-                    <strong>{{product.description}}</strong><small> {{product.ref}}</small>
-                    <br>
-                    <strong>${{product.price}}</strong> {{product.category.name}}, {{product.subcategory.name}}
-                    </p>
+                <div [class.srg-hide]="query.section=='t' || query.section==undefined" class="field">
+                    <label class="label">Categoría</label>
+                    <ul class="menu-list">
+                        <li><a [class.is-active]="query.category=='t' || query.category==undefined"
+                            (click)="query.category='t';fillSubcategories()">Todo</a></li>
+                        <li *ngFor="let cat of categories">
+                            <a [class.is-active]="query.category==cat._id"
+                            (click)="query.category=cat._id;fillSubcategories()">{{cat.name}}</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="buttons has-addons is-right">
-                    <button (click)="edit(product)" class="button is-white is-outlined">Editar</button>
-                    <button (click)="deleteProduct(product)" class="button is-danger is-outlined is-inverted">Eliminar</button>
+                <div [class.srg-hide]="query.category=='t' || query.category==undefined" class="field">
+                    <label class="label">Subcategoría</label>
+                    <ul class="menu-list">
+                        <li><a [class.is-active]="query.subcategory=='t' || query.subcategory==undefined"
+                            (click)="query.subcategory='t';subcategoryChange()">Todo</a></li>
+                        <li *ngFor="let sub of subcategories">
+                            <a [class.is-active]="query.subcategory==sub._id"
+                            (click)="query.subcategory=sub._id;subcategoryChange()">{{sub.name}}</a>
+                        </li>
+                    </ul>
                 </div>
+                <div class="field">
+                    <label class="label">Marca</label>
+                    <ul class="menu-list">
+                        <li><a [class.is-active]="query.brand=='t' || query.brand==undefined"
+                            (click)="query.brand='t';brandChange()">Todo</a></li>
+                        <li *ngFor="let br of brands">
+                            <a [class.is-active]="query.brand==br._id"
+                            (click)="query.brand=br._id;brandChange()">{{br.name}}</a>
+                        </li>
+                    </ul>
                 </div>
-            </article>-->
-            <nav class="level is-hidden-mobile is-hidden-tablet-only">
-                <div class="level-left">
-                    <div class="level-item">
-                        <figure class="image is-64x64">
-                            <img style="cursor:pointer" (click)="alert.showImage(product.image)" src="{{product.image}}" alt="Image">
-                        </figure>
+                <div class="field">
+                    <div class="control">
+                        <button (click)="getProducts()" class="button">Aplicar</button>
                     </div>
                 </div>
-                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
-                    <div>
-                        <p class="heading">Descripción</p>
-                        <p class="subtitle">{{product.description}}</p>
-                    </div>
+                <!--FILTER-->
+            </div>
+        </div>
+        <div class="column">
+            <div *ngFor="let x of array;  let i = index" class="columns">
+                <div *ngFor="let product of products.slice(i*3, i*3+3)" class="column is-one-third">
+                    <app-product-tile
+                        (detail)="productDetail($event)"
+                        (deleteProduct)="deleteProduct($event)"
+                        (editProduct)="edit($event)"
+                        [admin]="true"
+                        [product]="product"></app-product-tile>
                 </div>
-                <div *ngIf="product.ref" class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
-                    <div>
-                        <p class="heading">Referencia</p>
-                        <p class="subtitle">{{product.ref}}</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
-                    <div>
-                        <p class="heading">Categoría</p>
-                        <p class="subtitle">{{product.category.name}}</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
-                    <div>
-                        <p class="heading">Subcategoría</p>
-                        <p class="subtitle">{{product.subcategory.name}}</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered" style="cursor: pointer" (click)="productDetail(product)">
-                    <div>
-                        <p class="heading">Marca</p>
-                        <p class="subtitle">{{product.brand.name}}</p>
-                    </div>
-                </div>
-            </nav>
-            <!--MOBILE-->
-            <nav class="level is-mobile is-hidden-desktop">
-                <div class="level-left">
-                    <div class="level-item">
-                        <figure class="image is-64x64">
-                            <img style="cursor:pointer" (click)="alert.showImage(product.image)" src="{{product.image}}" alt="Image">
-                        </figure>
-                    </div>
-                </div>
-                <div style="cursor: pointer" (click)="productDetail(product)" class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Descripción</p>
-                        <p class="subtitle">{{product.description}}</p>
-                    </div>
-                </div>
-            </nav>
-            <nav class="level is-mobile  is-hidden-desktop">
-                <div class="level-left level-item has-text-centered">
-                    <div>
-                        <p class="heading">Categoría</p>
-                        <p class="subtitle">{{product.category.name}}</p>
-                    </div>
-                </div>
-                <div class="level-item has-text-centered">
-                    <div>
-                        <p class="heading">Subcategoría</p>
-                        <p class="subtitle">{{product.subcategory.name}}</p>
-                    </div>
-                </div>
-                <div class="level-right level-item has-text-centered">
-                    <div>
-                        <p class="heading">Marca</p>
-                        <p class="subtitle">{{product.brand.name}}</p>
-                    </div>
-                </div>
-            </nav>
-            <!--MOBILE-->
-            <div class="buttons has-addons is-centered">
-                <button (click)="edit(product)" class="button is-white is-outlined">Editar</button>
-                <button (click)="deleteProduct(product)" class="button is-danger is-outlined is-inverted">Eliminar</button>
+            </div>
+
+            <div *ngIf="pages!=0" class="buttons is-centered has-addons">
+                <button *ngIf="page!=1" (click)="page=page-1;getProducts(true)" class="button is-rounded">&#171;</button>
+                <button
+                    *ngFor="let p of arrayPages"
+                    (click)="page=p;getProducts(true)"
+                    class="button is-rounded"
+                    [ngClass]="p==page?'is-static':''"
+                    >{{p}}</button>
+                <button *ngIf="page!=pages" (click)="page=page+1;getProducts(true)" class="button is-rounded">&#187;</button>
             </div>
         </div>
     </div>
-    <!------------------------------------------FILTER------------------------------------------>
-    <!------------------------------------------FILTER------------------------------------------>
-    <div [className]="filter?'box':'srg-hide'">
-        <h1 class="title">Filtrar</h1>
-        <form #filterForm="ngForm" (ngSubmit)="getProducts()">
-            <div class="field">
-                <label for="proddesc" class="label">Descripción</label>
-                <input [(ngModel)]="query.description" type="text" name="proddesc" class="input" placeholder="Busca descripción, referencia, categoría, etc." [(ngModel)]="description">
+
+    <div [class.srg-hide]="filter">
+        <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
+            <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
+                <app-product-tile
+                    (detail)="productDetail($event)"
+                    (deleteProduct)="deleteProduct($event)"
+                    (editProduct)="edit($event)"
+                    [admin]="true"
+                    [product]="product"></app-product-tile>
+            </div>
+        </div>
+
+        <div class="buttons is-centered has-addons is-hidden-tablet">
+            <button *ngIf="page!=1" (click)="page=page-1;getProducts(true)" class="button is-rounded">&#171;</button>
+            <button
+                *ngFor="let p of arrayPages"
+                (click)="page=p;getProducts(true)"
+                class="button is-rounded"
+                [ngClass]="p==page?'is-static':''"
+                >{{p}}</button>
+            <button *ngIf="page!=pages" (click)="page=page+1;getProducts(true)" class="button is-rounded">&#187;</button>
+        </div>
+    </div>
+
+    <div [className]="filter?'is-hidden-tablet':'srg-hide'" style="padding: 0.5rem">
+        <h1 class="subtitle">Filtrar por</h1>
+        <form class="field" (ngSubmit)="getProducts()">
+            <label class="label" for="search">Buscar</label>
+            <div class="field has-addons">
+                <p class="control" style="width:-webkit-fill-available">
+                    <input [(ngModel)]="query.description" name="search" class="input" type="text" placeholder="Descripción">
+                </p>
+                <p class="control">
+                    <button type="submit" class="button is-beige-lighter">🔍</button>
+                </p>
+            </div>
+        </form>
+        <form class="field" (ngSubmit)="getProducts()">
+            <label class="label">Rango de Precios</label>
+            <div class="field has-addons">
+                <div class="control" style="width:-webkit-fill-available">
+                    <input [(ngModel)]="query.minPrice" class="input" type="number" name="minprice" placeholder="Mínimo">
+                </div>
+                <div class="control">
+                    <a class="button is-static input-color is-borderless">
+                    -
+                    </a>
+                </div>
+                <div class="control" style="width:-webkit-fill-available">
+                    <input [(ngModel)]="query.maxPrice" class="input" type="number" name="maxprice" placeholder="Máximo">
+                </div>
             </div>
             <div class="field">
-                <label class="label">Categoría</label>
                 <div class="control">
-                    <div class="select">
-                        <select id="category" name="category" [(ngModel)]="query.category" (change)="categoryChanged()">
-                            <option value="">Seleccionar Categoría</option>
-                            <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Subcategoría</label>
-                <div class="control">
-                    <div class="select">
-                        <select id="subcategory" name="subcategory" [(ngModel)]="query.subcategory">
-                            <option value="">Seleccionar Subcategoría</option>
-                            <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{subcat.name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Marca</label>
-                <div class="control">
-                    <div class="select">
-                        <select id="brand" name="brand" [(ngModel)]="query.brand">
-                            <option value="">Seleccionar Marca</option>
-                            <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="field is-grouped">
-                <div class="control">
-                    <button type="submit" class="button is-primary" [disabled]="false">Aceptar</button>
-                </div>
-                <div class="control">
-                    <button type="button" (click)="filter = false" class="button">Cancelar</button>
-                </div>
-                <div class="control">
-                    <button type="button" (click)="clear()" class="button">Limpiar</button>
+                    <button class="button" type="submit">Aplicar</button>
                 </div>
             </div>
         </form>
+        <div class="field">
+            <label class="label">Sección</label>
+            <ul class="menu-list">
+                <li><a [class.is-active]="query.section=='t' || query.section==undefined"
+                    (click)="query.section='t';fillCategories()">Todo</a></li>
+                <li *ngFor="let sec of sections">
+                    <a [class.is-active]="query.section==sec._id"
+                    (click)="query.section=sec._id;fillCategories()">{{sec.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div [class.srg-hide]="query.section=='t' || query.section==undefined" class="field">
+            <label class="label">Categoría</label>
+            <ul class="menu-list">
+                <li><a [class.is-active]="query.category=='t' || query.category==undefined"
+                    (click)="query.category='t';fillSubcategories()">Todo</a></li>
+                <li *ngFor="let cat of categories">
+                    <a [class.is-active]="query.category==cat._id"
+                    (click)="query.category=cat._id;fillSubcategories()">{{cat.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div [class.srg-hide]="query.category=='t' || query.category==undefined" class="field">
+            <label class="label">Subcategoría</label>
+            <ul class="menu-list">
+                <li><a [class.is-active]="query.subcategory=='t' || query.subcategory==undefined"
+                    (click)="query.subcategory='t';subcategoryChange()">Todo</a></li>
+                <li *ngFor="let sub of subcategories">
+                    <a [class.is-active]="query.subcategory==sub._id"
+                    (click)="query.subcategory=sub._id;subcategoryChange()">{{sub.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="field">
+            <label class="label">Marca</label>
+            <ul class="menu-list">
+                <li><a [class.is-active]="query.brand=='t' || query.brand==undefined"
+                    (click)="query.brand='t';brandChange()">Todo</a></li>
+                <li *ngFor="let br of brands">
+                    <a [class.is-active]="query.brand==br._id"
+                    (click)="query.brand=br._id;brandChange()">{{br.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button (click)="getProducts()" class="button">Aplicar</button>
+            </div>
+        </div>
     </div>
-    <h1 class="title has-text-danger is-uppercase">Falta Paginación</h1>
 </div>
-<!------------------------------------------LISTA------------------------------------------>
-<!------------------------------------------LISTA------------------------------------------>
 
 <app-alert></app-alert>

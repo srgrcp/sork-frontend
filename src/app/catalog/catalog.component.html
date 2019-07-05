@@ -1,39 +1,47 @@
-<app-nav (searchEmitter)="getProducts($event)" (categoryEmitter)="getCategories($event)" (brandEmitter)="getBrands($event)"></app-nav>
-
+<app-nav (reloadEmitter)="ngOnInit()" (searchEmitter)="getProducts($event)" (sectionEmitter)="getSections($event)" (brandEmitter)="getBrands($event)"></app-nav>
+<!--{{loaded}}
+<p style="white-space: pre-wrap"></p>
+<code>
+<strong>loaded:</strong> {{loaded}}
+{{brands | json}}
+{{console}}
+</code>
+<a (click)="test()">Test</a>-->
 <div *ngIf="loaded" class="container srg-btm">
     <br>
     <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs" style="margin-left: 0.75rem">
         <ul>
             <li><a routerLink="/" >{{title}}</a></li>
             <li [className]="state[state.length-1]=='catalog'?'is-active':''"><a routerLink="/Catalogo">Catálogo</a></li>
-            <li [className]="state[state.length-1]=='category'?'is-active':''" *ngIf="state.includes('category') || state=='subcategory'"><a routerLink="/Catalogo/{{categoryName}}">{{categoryName}}</a></li>
-            <li [className]="state[state.length-1]=='subcategory'?'is-active':''" *ngIf="state.includes('subcategory')"><a routerLink="/Catalogo/{{categoryName}}/{{subcategoryName}}">{{subcategoryName}}</a></li>
+            <li [className]="state[state.length-1]=='section'?'is-active':''" *ngIf="state.includes('section') || state=='category'"><a routerLink="/{{sectionName}}">{{sectionName}}</a></li>
+            <li [className]="state[state.length-1]=='category'?'is-active':''" *ngIf="state.includes('category') || state=='subcategory'"><a routerLink="/{{sectionName}}/{{categoryName}}">{{categoryName}}</a></li>
+            <li [className]="state[state.length-1]=='subcategory'?'is-active':''" *ngIf="state.includes('subcategory')"><a routerLink="/{{sectionName}}/{{categoryName}}/{{subcategoryName}}">{{subcategoryName}}</a></li>
             <li [className]="state[state.length-1]=='brand'?'is-active':''" *ngIf="state.includes('brand')"><a routerLink="/Marcas/{{brandName}}">{{brandName}}</a></li>
         </ul>
     </nav>
 
-    <div class="notification is-dark level is-mobile">
+    <div class="level is-mobile is-hidden-tablet" style="padding: 1rem">
         <div class="level-left">
-            <span class="level-item">{{getState()}}</span>
+            <span class="level-item is-uppercase title is-6">{{getState()}}</span>
         </div>
         <div class="level-right is-hidden-tablet">
-            <button class="level-item button is-primary" (click)="filter = !filter">Filtrar</button>
+            <button class="level-item button is-warning is-rounded" (click)="filter = !filter">{{filter?'Cerrar':'Filtrar'}}</button>
         </div>
     </div>
 
     <div class="columns is-hidden-mobile">
         <div class="column is-one-fifth">
-            <div class="card">
+            <div class="has-background-white">
                 <div style="padding: 0.5rem">
                     <h1 class="subtitle">Filtrar por</h1>
-                    <form (ngSubmit)="getProducts()">
+                    <form (ngSubmit)="getProducts(undefined, true)" class="field">
                         <label class="label" for="search">Buscar</label>
                         <div class="field has-addons">
-                            <p class="control">
-                                <input [(ngModel)]="query.description" name="search" class="input" type="text" placeholder="Descripción">
+                            <p class="control" style="width:-webkit-fill-available">
+                                <input [(ngModel)]="query.description" name="search" class="input is-light is-rounded" type="text" placeholder="Descripción">
                             </p>
                             <p class="control">
-                                <button type="submit" class="button is-beige-lighter">🔍</button>
+                                <button type="submit" class="button is-light is-rounded">🔍</button>
                             </p>
                         </div>
                     </form>
@@ -41,121 +49,144 @@
                         <label class="label">Tallas</label>
                         <div class="srg-box">
                             <div *ngFor="let x of arraySizes; let i = index"  class="control">
-                                <label class="checkbox">
-                                    <input type="checkbox" (change)="sizeCheck(i+serverData.size.min)">
-                                    {{i+serverData.size.min}}
-                                </label>
+                                <div class="b-checkbox is-primary is-unselectable">
+                                    <input class="styled" type="checkbox" [(ngModel)]="x.checked" id="size{{i}}" (change)="sizeCheck(i, x.checked)">
+                                    <label for="size{{i}}">
+                                        <span> Talla {{i+serverData.size.min}}</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button (click)="getProducts()" class="button">Aplicar</button>
+                            <button (click)="getProducts(undefined, true)" class="button is-fullwidth is-rounded is-primary">Aplicar</button>
                         </div>
                     </div>
-                    <form class="field" (ngSubmit)="getProducts()">
+                    <form class="field" (ngSubmit)="getProducts(undefined, true)">
                         <label class="label">Rango de Precios</label>
                         <div class="field has-addons">
-                            <div class="control">
-                                <input [(ngModel)]="query.minPrice" class="input" type="number" name="minprice" placeholder="Mínimo">
+                            <div class="control" style="width:-webkit-fill-available">
+                                <input [(ngModel)]="query.minPrice" class="input is-light is-rounded" type="number" name="minprice" placeholder="Mínimo">
                             </div>
                             <div class="control">
                                 <a class="button is-static input-color is-borderless">
                                 -
                                 </a>
                             </div>
-                            <div class="control">
-                                <input [(ngModel)]="query.maxPrice" class="input" type="number" name="maxprice" placeholder="Máximo">
+                            <div class="control" style="width:-webkit-fill-available">
+                                <input [(ngModel)]="query.maxPrice" class="input is-light is-rounded" type="number" name="maxprice" placeholder="Máximo">
                             </div>
                         </div>
                         <div class="field">
                             <div class="control">
-                                <button (click)="getProducts()" class="button" type="submit">Aplicar</button>
+                                <button class="button is-fullwidth is-rounded is-primary" type="submit">Aplicar</button>
                             </div>
                         </div>
                     </form>
                     <div class="field">
-                        <label class="label" for="">Categoría</label>
-                        <div class="control is-expanded">
-                            <div class="select is-multiple is-fullwidth">
-                                <select
-                                    [(ngModel)]="query.category"
-                                    class="srg-border has-background-white"
-                                    name="category" size="5" style="overflow:hidden auto;height: 6rem"
-                                    (change)="fillSubcategories()">
-                                    <option value="t">Todas</option>
-                                    <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
-                                </select>
-                            </div>
-                        </div>
+                        <label class="label">Sección</label>
+                        <ul class="menu-list">
+                            <li><a [class.is-active]="query.section=='t' || query.section==undefined"
+                                (click)="query.section='t';fillCategories()">Todo</a></li>
+                            <li *ngFor="let sec of sections">
+                                <a [class.is-active]="query.section==sec._id"
+                                (click)="query.section=sec._id;fillCategories()">{{sec.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div [class.srg-hide]="query.section=='t' || query.section==undefined" class="field">
+                        <label class="label">Categoría</label>
+                        <ul class="menu-list">
+                            <li><a [class.is-active]="query.category=='t' || query.category==undefined"
+                                (click)="query.category='t';fillSubcategories()">Todo</a></li>
+                            <li *ngFor="let cat of categories">
+                                <a [class.is-active]="query.category==cat._id"
+                                (click)="query.category=cat._id;fillSubcategories()">{{cat.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div [class.srg-hide]="query.category=='t' || query.category==undefined" class="field">
+                        <label class="label">Subcategoría</label>
+                        <ul class="menu-list">
+                            <li><a [class.is-active]="query.subcategory=='t' || query.subcategory==undefined"
+                                (click)="query.subcategory='t';subcategoryChange()">Todo</a></li>
+                            <li *ngFor="let sub of subcategories">
+                                <a [class.is-active]="query.subcategory==sub._id"
+                                (click)="query.subcategory=sub._id;subcategoryChange()">{{sub.name}}</a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="field">
-                        <label class="label" for="">Subcategoría</label>
-                        <div class="control is-expanded">
-                            <div class="select is-multiple is-fullwidth">
-                                <select
-                                    [(ngModel)]="query.subcategory"
-                                    class="srg-border has-background-white"
-                                    name="subcategory" size="5" style="overflow:hidden auto;height: 6rem"
-                                    (change)="subcategoryChange()">
-                                    <option value="t">Todas</option>
-                                    <option *ngFor="let sub of subcategories" [value]="sub._id">{{sub.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="">Marca</label>
-                        <div class="control is-expanded">
-                            <div class="select is-multiple is-fullwidth">
-                                <select
-                                    [(ngModel)]="query.brand"
-                                    class="srg-border has-background-white"
-                                    name="brand" size="5" style="overflow:hidden auto;height: 6rem"
-                                    (change)="brandChange()">
-                                    <option value="t">Todas</option>
-                                    <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
-                                </select>
-                            </div>
-                        </div>
+                        <label class="label">Marca</label>
+                        <ul class="menu-list">
+                            <li><a [class.is-active]="query.brand=='t' || query.brand==undefined"
+                                (click)="query.brand='t';brandChange()">Todo</a></li>
+                            <li *ngFor="let br of brands">
+                                <a [class.is-active]="query.brand==br._id"
+                                (click)="query.brand=br._id;brandChange()">{{br.name}}</a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button (click)="getProducts()" class="button">Aplicar</button>
+                            <button (click)="getProducts(undefined, true)" class="button is-fullwidth is-rounded is-primary">Aplicar</button>
                         </div>
                     </div>
-                    <a (click)="getNewURL()">test</a>
                 </div>
             </div>
         </div>
         <div class="column">
             <div *ngFor="let x of array;  let i = index" class="columns">
                 <div *ngFor="let product of products.slice(i*3, i*3+3)" class="column is-one-third">
-                    <app-product-tile [product]="product"></app-product-tile>
+                    <a routerLink="/Producto/{{getURL(product)}}"><app-product-tile [product]="product"></app-product-tile></a>
                 </div>
+            </div>
+
+            <div class="buttons is-centered has-addons">
+                <button *ngIf="page!=1" (click)="page=page-1;getNewURL(true)" class="button is-rounded">&#171;</button>
+                <button
+                    *ngFor="let p of arrayPages"
+                    (click)="page=p;getNewURL(true)"
+                    class="button is-rounded"
+                    [ngClass]="p==page?'is-static':''"
+                    >{{p}}</button>
+                <button *ngIf="page!=pages" (click)="page=page+1;getNewURL(true)" class="button is-rounded">&#187;</button>
             </div>
         </div>
     </div>
 
-    <div *ngIf="!filter">
+    <div [class.srg-hide]="filter">
         <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
             <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
-                <app-product-tile [product]="product"></app-product-tile>
+                    <a routerLink="/Producto/{{getURL(product)}}"><app-product-tile [product]="product"></app-product-tile></a>
             </div>
         </div>
+
+        <div class="buttons is-centered has-addons is-hidden-tablet">
+            <button *ngIf="page!=1" (click)="page=page-1;getNewURL(true)" class="button is-rounded is-medium">&#171;</button>
+            <button
+                *ngFor="let p of arrayPages"
+                (click)="page=p;getNewURL(true)"
+                class="button is-rounded is-medium"
+                [ngClass]="p==page?'is-static':''"
+                >{{p}}</button>
+            <button *ngIf="page!=pages" (click)="page=page+1;getNewURL(true)" class="button is-rounded is-medium">&#187;</button>
+        </div>
     </div>
+
 
     <div [className]="filter?'is-hidden-tablet':'srg-hide'">
         <div style="padding: 0.5rem">
             <h1 class="subtitle">Filtrar por</h1>
-            <form (ngSubmit)="getProducts();filter = !filter">
+            <form (ngSubmit)="getProducts(undefined, true)">
                 <label class="label" for="search">Buscar</label>
                 <div class="field has-addons">
-                    <p class="control" style="width: -webkit-fill-available">
-                        <input [(ngModel)]="query.description" name="search" class="input" type="text" placeholder="Descripción">
+                    <p class="control" style="width:-webkit-fill-available">
+                        <input [(ngModel)]="query.description" name="search" class="input is-light is-rounded" type="text" placeholder="Descripción">
                     </p>
                     <p class="control">
-                        <button type="submit" class="button is-beige-lighter">🔍</button>
+                        <button type="submit is-light is-rounded" class="button is-color-input">🔍</button>
                     </p>
                 </div>
             </form>
@@ -163,22 +194,93 @@
                 <label class="label">Tallas</label>
                 <div class="srg-box">
                     <div *ngFor="let x of arraySizes; let i = index"  class="control">
-                        <label class="checkbox">
-                            <input type="checkbox" (change)="sizeCheck(i+serverData.size.min)">
-                            {{i+serverData.size.min}}
-                        </label>
+                        <div class="b-checkbox is-primary is-unselectable">
+                            <input class="styled" type="checkbox" [(ngModel)]="x.checked" id="size{{i}}" (change)="sizeCheck(i, x.checked)">
+                            <label for="size{{i}}">
+                                <span> Talla {{i+serverData.size.min}}</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="field is-grouped">
+            <div class="field">
                 <div class="control">
-                    <button (click)="getProducts();filter = !filter" class="button is-primary">Aplicar</button>
+                    <button (click)="getProducts(undefined, true)" class="button is-rounded is-primary">Aplicar</button>
                 </div>
+            </div>
+            <form class="field" (ngSubmit)="getProducts(undefined, true)">
+                <label class="label">Rango de Precios</label>
+                <div class="field has-addons">
+                    <div class="control is-light is-rounded" style="width:-webkit-fill-available">
+                        <input [(ngModel)]="query.minPrice" class="input" type="number" name="minprice" placeholder="Mínimo">
+                    </div>
+                    <div class="control">
+                        <a class="button is-static input-color is-borderless">
+                        -
+                        </a>
+                    </div>
+                    <div class="control is-light is-rounded" style="width:-webkit-fill-available">
+                        <input [(ngModel)]="query.maxPrice" class="input" type="number" name="maxprice" placeholder="Máximo">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-rounded is-primary" type="submit">Aplicar</button>
+                    </div>
+                </div>
+            </form>
+            <div class="field">
+                <label class="label">Sección</label>
+                <ul class="menu-list">
+                    <li><a [class.is-active]="query.section=='t' || query.section==undefined"
+                        (click)="query.section='t';fillCategories()">Todo</a></li>
+                    <li *ngFor="let sec of sections">
+                        <a [class.is-active]="query.section==sec._id"
+                        (click)="query.section=sec._id;fillCategories()">{{sec.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div [class.srg-hide]="query.section=='t' || query.section==undefined" class="field">
+                <label class="label">Categoría</label>
+                <ul class="menu-list">
+                    <li><a [class.is-active]="query.category=='t' || query.category==undefined"
+                        (click)="query.category='t';fillSubcategories()">Todo</a></li>
+                    <li *ngFor="let cat of categories">
+                        <a [class.is-active]="query.category==cat._id"
+                        (click)="query.category=cat._id;fillSubcategories()">{{cat.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div [class.srg-hide]="query.category=='t' || query.category==undefined" class="field">
+                <label class="label">Subcategoría</label>
+                <ul class="menu-list">
+                    <li><a [class.is-active]="query.subcategory=='t' || query.subcategory==undefined"
+                        (click)="query.subcategory='t';subcategoryChange()">Todo</a></li>
+                    <li *ngFor="let sub of subcategories">
+                        <a [class.is-active]="query.subcategory==sub._id"
+                        (click)="query.subcategory=sub._id;subcategoryChange()">{{sub.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="field">
+                <label class="label">Marca</label>
+                <ul class="menu-list">
+                    <li><a [class.is-active]="query.brand=='t' || query.brand==undefined"
+                        (click)="query.brand='t';brandChange()">Todo</a></li>
+                    <li *ngFor="let br of brands">
+                        <a [class.is-active]="query.brand==br._id"
+                        (click)="query.brand=br._id;brandChange()">{{br.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="field">
                 <div class="control">
-                    <button (click)="filter = !filter" class="button">Cancelar</button>
+                    <button (click)="getProducts(undefined, true)" class="button is-rounded is-primary">Aplicar</button>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+<app-footer *ngIf="loaded" [brands]="brands" [sections]="sections"></app-footer>

@@ -1,0 +1,16 @@
+{
+    "short_name": "sork",
+    "name": "sork",
+    "icons": [
+      {
+        "src": "assets/S-icon.png",
+        "type": "image/png",
+        "sizes": "1024x1024"
+      }
+    ],
+    "scope": "/",
+    "start_url": "/",
+    "background_color": "#7445ad",
+    "theme_color": "#7445ad",
+    "display": "fullscreen"
+  }

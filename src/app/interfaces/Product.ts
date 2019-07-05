@@ -6,9 +6,14 @@ export interface Product {
     cost: Number
     price: Number
     image: String
-    category: { _id?: String, name?: String }
-    subcategory: { _id?: String, name?: String }
-    brand: { _id?: String, name?: String }
+    section?: String// { _id?: String, name?: String }
+    category?: String// { _id?: String, name?: String }
+    subcategory?: String// { _id?: String, name?: String }
+    brand?: String// { _id?: String, name?: String }
+    sectionName?: String
+    categoryName?: String
+    subcategoryName?: String
+    brandName?: String
     slide?: { _id?: String, url?: String }
     sizes?: Number[]
 }

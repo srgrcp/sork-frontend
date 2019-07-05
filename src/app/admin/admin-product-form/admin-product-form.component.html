@@ -1,5 +1,5 @@
-<h2 class="subtitle">{{edit?'Modificar Producto':'Crear Producto'}} <a class="is-size-6 has-text-primary" (click)="test()">test</a></h2>
 <form #prodForm="ngForm" (ngSubmit)="submit()">
+    <h2 class="subtitle">{{edit?'Modificar Producto':'Crear Producto'}} <a class="is-size-6 has-text-primary" (click)="test()">test</a></h2>
     <div class="field">
         <label for="proddesc" class="label">Descripción</label>
         <input type="text" name="proddesc" class="input" placeholder="Producto" [(ngModel)]="product.description" required>
@@ -25,17 +25,33 @@
         <input type="text" name="image" class="input" placeholder="URL" [(ngModel)]="product.image" required>
     </div>
     <div class="field">
+        <label class="label">Seleccionar Sección</label>
+        <div class="control">
+            <div class="select">
+                <select id="section" name="section" [(ngModel)]="product.section" (change)="sectionChanged()" required>
+                    <option value="" disabled>Seleccionar Sección</option>
+                    <option *ngFor="let sec of sections" [value]="sec._id">{{sec.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <article *ngIf="product.section == undefined || product.section == ''" class="notification is-warning">
+        <p>
+            Debe seleccionar una sección.
+        </p>
+    </article>
+    <div class="field">
         <label class="label">Seleccionar Categoría</label>
         <div class="control">
             <div class="select">
-                <select id="category" name="category" [(ngModel)]="category" (change)="categoryChanged()" required>
+                <select id="category" name="category" [(ngModel)]="product.category" (change)="categoryChanged()" required>
                     <option value="" disabled>Seleccionar Categoría</option>
                     <option *ngFor="let cat of categories" [value]="cat._id">{{cat.name}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <article *ngIf="category == undefined || category == ''" class="notification is-warning">
+    <article *ngIf="product.category == undefined || product.category == ''" class="notification is-warning">
         <p>
             Debe seleccionar una categoría.
         </p>
@@ -44,14 +60,14 @@
         <label class="label">Seleccionar Subcategoría</label>
         <div class="control">
             <div class="select">
-                <select id="subcategory" name="subcategory" [(ngModel)]="subcategory" (change)="subcategoryChanged()">
+                <select id="subcategory" name="subcategory" [(ngModel)]="product.subcategory" (change)="subcategoryChanged()">
                     <option value="" disabled>Seleccionar Subcategoría</option>
                     <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{subcat.name}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <article *ngIf="subcategory == undefined || subcategory == ''" class="notification is-warning">
+    <article *ngIf="product.subcategory == undefined || product.subcategory == ''" class="notification is-warning">
         <p>
             Debe seleccionar una subcategoría.
         </p>
@@ -60,14 +76,14 @@
         <label class="label">Seleccionar Marca</label>
         <div class="control">
             <div class="select">
-                <select id="brand" name="brand" [(ngModel)]="brand" (change)="brandChanged()">
+                <select id="brand" name="brand" [(ngModel)]="product.brand" (change)="brandChanged()">
                     <option value="" disabled>Seleccionar Marca</option>
                     <option *ngFor="let br of brands" [value]="br._id">{{br.name}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <article *ngIf="brand == undefined || brand == ''" class="notification is-warning">
+    <article *ngIf="product.brand == undefined || product.brand == ''" class="notification is-warning">
         <p>
             Debe seleccionar una marca.
         </p>

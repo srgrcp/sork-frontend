@@ -1,6 +1,17 @@
 <h2 class="subtitle">Editar Subcategorías</h2>
 <form #subcatForm="ngForm" (ngSubmit)="submit()">
     <div class="field">
+        <label class="label">Seleccionar Sección</label>
+        <div class="control">
+            <div class="select">
+                <select id="section" name="section" [(ngModel)]="section" (change)="sectionChanged()">
+                    <option value="" disabled>Seleccionar Sección</option>
+                    <option *ngFor="let sec of sections" [value]="sec._id">{{sec.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="field">
         <label class="label">Seleccionar Categoría</label>
         <div class="control">
             <div class="select">

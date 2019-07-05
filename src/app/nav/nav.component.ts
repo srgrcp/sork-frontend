@@ -3,6 +3,8 @@ import { CategoryBrandService } from '../Services/category-brand.service'
 import { Category } from '../interfaces/Category'
 import { Constants } from '../constants'
 import { Router } from "@angular/router"
+import { Section } from '../interfaces/Section';
+import { ProductService } from '../Services/product.service';
 
 interface Brand{ _id?:String, name: String }
 
@@ -13,15 +15,19 @@ interface Brand{ _id?:String, name: String }
 })
 export class NavComponent implements OnInit {
 
-    categories: Category[]
+    sections: Section[]
     brands: Brand[]
     title: String = Constants.title
     sticky: Number = 100
     scroll: Number = 0
-    @Output() categoryEmitter = new EventEmitter<Category[]>()
+    @Output() sectionEmitter = new EventEmitter<Section[]>()
     @Output() brandEmitter = new EventEmitter<Brand[]>()
     @Output() searchEmitter = new EventEmitter<String>()
+    @Output() reloadEmitter = new EventEmitter()
     query: String = ''
+    section: Section
+    sectionMenu: boolean = false
+    cartCount: number = 0
 
     @HostListener("window:scroll", ['$event'])
     scrollEvent($event:Event){
@@ -30,32 +36,40 @@ export class NavComponent implements OnInit {
 
     constructor(
         private categoryServices: CategoryBrandService,
+        private productService: ProductService,
         private router: Router
         ) { }
 
     is_active: boolean = false
 
     ngOnInit() {
-        this.getCategories()
+        this.getSections()
         this.getBrands()
+        this.productService.getCart().subscribe(res => {
+            if(res) this.cartCount = res.items.length
+        })
+    }
+
+    reload(url: string){
+        if (this.router.url == url) this.reloadEmitter.next()
     }
 
     search(){
         if (this.query == '') return
         let catalog = this.router.config.find(r => r.path === 'Catalogo')
         catalog.data = { query: this.query }
-        this.searchEmitter.next(this.query)
-        this.router.navigate(['Catalogo'])
+        if (this.router.url == '/Catalogo') this.searchEmitter.next(this.query)
+        else this.router.navigate(['Catalogo'])
     }
 
     toggle(){
         this.is_active = !this.is_active
     }
 
-    getCategories(){
-        this.categoryServices.getCategories().subscribe(res => {
-            this.categories = res
-            this.categoryEmitter.next(res)
+    getSections(){
+        this.categoryServices.getSections().subscribe(res => {
+            this.sections = res
+            this.sectionEmitter.next(res)
         })
     }
 

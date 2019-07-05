@@ -5,6 +5,7 @@ import { Router } from '@angular/router'
 import { Product } from '../interfaces/Product'
 import { Constants } from '../constants'
 import { UserService } from './auth.service'
+import { Cart, Item } from '../interfaces/Cart';
 
 interface Id { _id: string }
 interface Slide{ _id: String, url: String, product: { _id: String, description: String } }
@@ -18,29 +19,39 @@ export class ProductService {
 
     API_URI = Constants.API_URI
 
-    /*getProducts(
-            page?: Number,
-            description?: string,
-            ref?: string,
-            category?: string,
-            subcategory?: string,
-            brand?: string
-        ):Observable<Product[]>{
-        let query ='?'
-        if (description != undefined && description != '') query += `description=${description}`
-        if (ref != undefined && ref != '') query += query!='?'? `&ref=${ref}`:`ref=${ref}`
-        if (category != undefined && category != '') query += query!='?'? `&category=${category}`:`category=${category}`
-        if (subcategory != undefined && subcategory != '') query += query!='?'? `&subcategory=${subcategory}`:`subcategory=${subcategory}`
-        if (brand != undefined && brand != '') query += query!='?'? `&brand=${brand}`:`brand=${brand}`
-        if (query == '?') query = ''
-        if (page) return this.http.get<Product[]>(`${this.API_URI}/store/products/${page}${query}`)
-        return this.http.get<Product[]>(`${this.API_URI}/store/products${query}`)
-        }*/
+    cart: Cart = JSON.parse(localStorage.getItem('cart'))
+    listeners: Function[] = []
+
+    getCart():Observable<Cart>{
+        return new Observable(observer => {
+            observer.next(this.cart)
+            this.listeners.push(() => observer.next(this.cart))
+            return ()=>{}
+        })
+    }
+
+    addCartItem(item: Item){
+        if (!this.cart) this.cart = { items: [] }
+        this.cart.items.push(item)
+        localStorage.setItem('cart', JSON.stringify(this.cart))
+        for (let i = 0; i < this.listeners.length; i++) this.listeners[i]()
+    }
+
+    removeCartItem(i: number){
+        this.cart.items.splice(i, 1)
+        localStorage.setItem('cart', JSON.stringify(this.cart))
+        for (let i = 0; i < this.listeners.length; i++) this.listeners[i]()
+    }
+    
+    getProduct(_id: String):Observable<Product>{
+        return this.http.get<Product>(`${this.API_URI}/store/product/${_id}`)
+    }
 
     getProducts(page?: Number, queryObject?: any):Observable<Product[]>{
         let query ='?'
         Object.entries(queryObject).forEach(([k, v]) => {if (v != '') query += query!='?'? `&${k}=${v}`:`${k}=${v}`})
         if (query == '?') query = ''
+        console.log('queryService', query)
         if (page) return this.http.get<Product[]>(`${this.API_URI}/store/products/${page}${query}`)
         return this.http.get<Product[]>(`${this.API_URI}/store/products${query}`)
     }
@@ -61,8 +72,11 @@ export class ProductService {
         return this.http.get<Slide[]>(`${this.API_URI}/store/slides`)
     }
 
-    getData(){
-        return this.http.get(`${this.API_URI}/store/data`)
+    getData(query?){
+        //if (query.sizes == '') delete query.sizes
+        Object.entries(query).forEach(([k, v]) => {if (v == '') delete query[k]})
+        console.log('getData', query)
+        return this.http.post(`${this.API_URI}/store/data`, query? { query }: {})
     }
 
 }

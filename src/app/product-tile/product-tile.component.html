@@ -1,5 +1,5 @@
-<div class="card">
-    <a class="card" routerLink="/Producto/{{getURL()}}">
+<div class="">
+    <div class="card is-shadowless">
         <div class="card-image">
             <figure class="srg-image-4-3"
                 [style.background]="'url('+product.image+')'"
@@ -11,11 +11,32 @@
         <div class="card-content">
             <div class="content">
                 <p class="only-1-line">{{product.description}}</p>
-                <p class="only-1-line"><strong>{{product.brand.name}}</strong></p>
+                <p class="only-1-line"><strong>{{product.brandName}}</strong></p>
                 <p class="only-1-line">{{product.price | currency: 'COP': '$'}}</p>
             </div>
         </div>
-    </a>
+        <div *ngIf="admin" class="card-footer">
+            <div class="card-footer-item"><label class="checkbox"><input type="checkbox"> Seleccionar</label></div>
+            <div class="card-footer-item dropdown is-right is-up" [class.is-active]="active" (click)="active = !active" [style.cursor]="'pointer'">
+                <div class="dropdown-trigger">
+                    <span
+                        class="is-size-6 is-unselectable"
+                        aria-haspopup="true"
+                        aria-controls="dropdown-menu4">
+                        Opciones
+                    </span>
+                </div>
+                <div class="dropdown-menu is-boxed" id="dropdown-menu4" role="menu">
+                    <div class="dropdown-content">
+                        <a class="dropdown-item" (click)="editProduct.next(product)">Editar</a>
+                        <a class="dropdown-item" (click)="deleteProduct.next(product)">Eliminar</a>
+                        <a class="dropdown-item" (click)="detail.next(product)">Detalles</a>
+                        <a class="dropdown-item" routerLink="/Producto/{{getURL(product)}}">Ver Página</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>

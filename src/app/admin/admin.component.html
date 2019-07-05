@@ -1,4 +1,4 @@
-<section class="hero is-primary is-bold is-uppercase">
+<section class="hero is-primary is-bold is-uppercase shadow">
     <div class="hero-body" style="padding: 2rem">
         <div class="container">
             <a routerLink="/">
@@ -11,62 +11,105 @@
     </div>
 
     <div class="hero-foot">
-        <div class="tabs is-fullwidth is-boxed">
-            <div class="container">
-                <ul>
-                    <li [className]="tabIndex==0? 'is-active':''">
-                    <a (click)="switchIndex(0)">
-                        <span>Producto</span>
-                    </a>
-                    </li>
-                    <li [className]="tabIndex==1? 'is-active':''">
-                    <a (click)="switchIndex(1)">
-                        <span>Lista</span>
-                    </a>
-                    </li>
-                    <li [className]="tabIndex==2? 'is-active':''">
-                    <a (click)="switchIndex(2)">
-                        <span>Pedidos</span>
-                    </a>
-                    </li>
-                    <li [className]="tabIndex==3? 'is-active':''">
-                    <a (click)="switchIndex(3)">
-                        <span>Documents</span>
-                    </a>
-                    </li>
-                </ul>
-            </div>
+        <div class="tabs is-fullwidth">
+            <ul class="container">
+                <li [className]="tabIndex==0? 'is-active has-text-weight-semibold':''">
+                <a (click)="switchIndex(0)">
+                    <span>Producto</span>
+                </a>
+                </li>
+                <li [className]="tabIndex==1? 'is-active has-text-weight-semibold':''">
+                <a (click)="switchIndex(1)">
+                    <span>Lista</span>
+                </a>
+                </li>
+                <li [className]="tabIndex==2? 'is-active has-text-weight-semibold':''">
+                <a (click)="switchIndex(2)">
+                    <span>Contenido</span>
+                </a>
+                </li>
+                <li [className]="tabIndex==3? 'is-active has-text-weight-semibold':''">
+                <a (click)="switchIndex(3)">
+                    <span>Pedidos</span>
+                </a>
+                </li>
+            </ul>
         </div>
     </div>
 </section>
 <br>
 
 <div [className]="tabIndex==0?'container srg-btm':'srg-hide'">
-    <h1 class="title">Producto <a class="is-size-6 has-text-primary">test</a></h1>
-    <div class="columns">
+    <!--<h1 class="title">Producto <a class="is-size-6 has-text-primary">test</a></h1>-->
+
+    <div class="tabs is-fullwidth is-hidden-tablet">
+        <ul>
+            <li [class.is-active]="productIndex==0">
+                <a (click)="productIndex=0">Producto</a></li>
+            <li [class.is-active]="productIndex==1">
+                <a (click)="productIndex=1">Sección</a></li>
+            <li [class.is-active]="productIndex==2">
+                <a (click)="productIndex=2">Categoría</a></li>
+            <li [class.is-active]="productIndex==3">
+                <a (click)="productIndex=3">Subcategoría</a></li>
+            <li [class.is-active]="productIndex==4">
+                <a (click)="productIndex=4">Marca</a></li>
+        </ul>
+    </div>
+
+    <div class="columns is-hidden-mobile">
         <div class="column">
-            <div class="box">
-                <app-admin-product-form (updateProducts)="updateProducts()" [brands]="brands" [categories]="categories"></app-admin-product-form>
+            <div class="card">
+                <div class="card-content">
+                    <app-admin-product-form (updateProducts)="updateProducts()" [sections]="sections" [brands]="brands"></app-admin-product-form>
+                </div>
             </div>
         </div>
-        <div class="column">
-            <div class="box">
-                <app-admin-category (refreshCategories)="getCategoriesAndBrands($event)" [categories]="categories"></app-admin-category>
-            <hr>
-                <app-admin-subcategory (refreshCategories)="getCategoriesAndBrands($event)" [categories]="categories"></app-admin-subcategory>
-            <hr>
-                <app-admin-brand (refreshBrands)="getCategoriesAndBrands($event)" [brands]="brands"></app-admin-brand>
+        <div class="column is-two-fifths">
+            <div class="card">
+                <div class="card-content">
+                    <app-admin-section (refreshSections)="getSections($event)" [sections]="sections"></app-admin-section>
+                </div>
+                    <hr>
+                <div class="card-content">
+                    <app-admin-category (refreshSections)="getSections($event)" [sections]="sections"></app-admin-category>
+                </div>
+                    <hr>
+                <div class="card-content">
+                    <app-admin-subcategory (refreshSections)="getSections($event)" [sections]="sections"></app-admin-subcategory>
+                </div>
+                    <hr>
+                <div class="card-content">
+                    <app-admin-brand (refreshBrands)="getSections($event)" [brands]="brands"></app-admin-brand>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div [class.srg-hide]="productIndex!=0" class="is-hidden-tablet" style="padding: 0.5rem">
+        <app-admin-product-form (updateProducts)="updateProducts()" [sections]="sections" [brands]="brands"></app-admin-product-form>
+    </div>
+    <div [class.srg-hide]="productIndex!=1" class="is-hidden-tablet" style="padding: 0.5rem">
+        <app-admin-section (refreshSections)="getSections($event)" [sections]="sections"></app-admin-section>
+    </div>
+    <div [class.srg-hide]="productIndex!=2" class="is-hidden-tablet" style="padding: 0.5rem">
+        <app-admin-category (refreshSections)="getSections($event)" [sections]="sections"></app-admin-category>
+    </div>
+    <div [class.srg-hide]="productIndex!=3" class="is-hidden-tablet" style="padding: 0.5rem">
+        <app-admin-subcategory (refreshSections)="getSections($event)" [sections]="sections"></app-admin-subcategory>
+    </div>
+    <div [class.srg-hide]="productIndex!=4" class="is-hidden-tablet" style="padding: 0.5rem">
+        <app-admin-brand (refreshBrands)="getSections($event)" [brands]="brands"></app-admin-brand>
     </div>
 </div>
 
 <!--<app-product (updateProducts)="updateProducts()" [className]="tabIndex==0?'':'srg-hide'"></app-product>-->
-<div class="srg-btm">
+<div class="srg-btm" [class.srg-hide]="tabIndex!=1">
     <app-product-list
     (editProduct)="editProduct($event)"
     [brands]="brands"
-    [categories]="categories"
-    [className]="tabIndex==1?'':'srg-hide'"
+    [sections]="sections"
     ></app-product-list>
 </div>
+
+<app-footer [brands]="brands" [sections]="sections"></app-footer>

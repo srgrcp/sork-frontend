@@ -1,0 +1,28 @@
+<h2 class="subtitle">Editar Secciones</h2>
+<form #secForm="ngForm" (ngSubmit)="submit()">
+    <div class="field">
+        <label class="label">Seleccionar Sección</label>
+        <div class="control">
+            <div class="select">
+                <select id="section" name="section" [(ngModel)]="section" (change)="name=section=='n'? '': getSection(section).name">
+                    <option value="n">Crear Nueva Sección</option>
+                    <option *ngFor="let sec of sections" [value]="sec._id">{{sec.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="name" class="label">Nombre</label>
+        <input type="text" name="name" class="input" placeholder="Sección" [(ngModel)]="name" required>
+    </div>
+    <div class="field is-grouped is-grouped-right">
+        <div class="control">
+            <button type="button" *ngIf="section!='n'" (click)="delete()" [className]="loading?'button is-danger is-loading':'button is-danger'">Eliminar</button>
+        </div>
+        <div class="control">
+            <button type="submit" [className]="loading?'button is-primary is-loading':'button is-primary'" [disabled]="!secForm.form.valid">{{section=='n'? 'Crear Sección': 'Actualizar Sección'}}</button>
+        </div>
+    </div>
+</form>
+
+<app-alert></app-alert>
