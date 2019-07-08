@@ -2,13 +2,14 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { Category } from '../../interfaces/Category'
 import { Product } from '../../interfaces/Product'
 import { Section } from '../../interfaces/Section'
-import { CategoryBrandService } from '../../Services/category-brand.service'
 import { ProductService } from '../../Services/product.service'
 import { AlertComponent } from '../../alert/alert.component'
+import { Constants } from 'src/app/Constants'
 
-interface Subcategory{ _id?: String, name: String }
-interface Brand{ _id?: String, name: String }
-interface Slide{ _id?: String, url?: String }
+interface Subcategory{ _id?: string, name: string }
+interface Brand{ _id?: string, name: string }
+interface Slide{ file?: File, url?: string }
+interface Image{ file?: File, url: string, color?: string, variant?: string }
 
 @Component({
     selector: 'app-admin-product-form',
@@ -23,49 +24,64 @@ export class AdminProductFormComponent implements OnInit {
         size: '',
         cost: 0,
         price: 0,
-        image: '',
+        image: [{ url:'' }],
         section: '',
         category: '',
         subcategory: '',
         brand: ''
     }
+    images: Image[] = []
+    slideFile: Slide = { url: '' }
 
-    slideURL: Slide = { url: '' }
     @ViewChild(AlertComponent) alert: AlertComponent
     @Output() updateProducts = new EventEmitter()
     @Input() brands: Brand[]
     @Input() sections: Section[]
     categories: Category[]
     subcategories: Subcategory[]
+    colors: String[] = Constants.colors
     slide: boolean = false
     edit: boolean = false
     loading: boolean = false
 
-    constructor(
-        private categoryServices: CategoryBrandService,
-        private productServices: ProductService
-        ) { }
+    constructor(private productServices: ProductService) { }
     
     submit(){
         this.loading = true
-        /*this.product.section = this.getSection(this.section)
-        this.product.category = this.getCategory(this.category)//{ _id: this.category }
-        this.product.subcategory = this.getSubcategory(this.subcategory) //{ _id: this.subcategory }
-        this.product.brand = this.getBrand(this.brand) //{ _id: this.brand }*/
-        if (this.slide) this.product.slide = this.slideURL
+        if (this.slide && !this.product.slide._id) this.product.slide = { url: this.slideFile.file.name }
+        if (!this.slide && this.product.slide != undefined && this.product.slide._id) this.product.slide.url = '#delete'
+        if (this.slide) this.slideFile = { url: '' }
+        this.product.image = [{ url: '' }]
+        for (let i = 0; i < this.images.length; i++) {
+            const im = this.images[i]
+            if (i == 0) {
+                this.product.image[0].url = im.file? im.file.name: im.url    //Es justo y necesario
+                if (im.color != undefined && im.color != 'undefined')
+                    this.product.image[0].color = im.color
+                if (im.variant != undefined && im.variant != '')
+                    this.product.image[0].variant = im.variant
+            }else{
+                let tem: Image = { url: im.file? im.file.name: im.url }
+                if (im.color != undefined && im.color != 'undefined')
+                    tem.color = im.color
+                if (im.variant != undefined && im.variant != '')
+                    tem.variant = im.variant
+                this.product.image.push(tem)
+            }
+        }
         if(this.edit){
-            this.productServices.updateProduct(this.product).subscribe(res =>{
-                if (res.split('::')[0] == 'ok'){
+            this.productServices.updateProduct(this.product, this.images, this.slideFile.file).subscribe(res =>{
+                if (res == 'ok'){
                     this.updateProducts.next()
                     this.alert.showAlert('Producto', 'El producto se modificó correctamente.')
                     this.cancelEdit()
                 }else{
-                    this.alert.showAlert('Error al modificar producto', res)
+                    this.alert.showAlert('Error al modificar producto', JSON.stringify(res))
                 }
                 this.loading = false
             })
         }else{
-            this.productServices.createProduct(this.product).subscribe(res => {
+            this.productServices.createProduct(this.product, this.images, this.slideFile.file).subscribe(res => {
                 if (res.split('::')[0] == 'ok'){
                     this.updateProducts.next()
                     this.alert.showAlert('Producto', 'El producto se agregó correctamente.')
@@ -79,18 +95,19 @@ export class AdminProductFormComponent implements OnInit {
     }
 
     editProduct(product: Product){
+        console.log('editproduct', product)
         this.edit = true
         this.product = product
-        console.log('productsection', product)
-        console.log('sections', this.sections)
         this.categories = this.getSection(product.section).category
         this.subcategories = this.getCategory(product.category).subcategory
+        this.images = product.image
         if (product.slide) {
             this.slide = true
-            this.slideURL = product.slide
+            this.slideFile = { url: product.slide.url }
         }else{
+            this.product.slide = { url: '' }
             this.slide = false
-            this.slideURL = { url: '' }
+            this.slideFile = { url: '' }
         }
     }
 
@@ -102,15 +119,15 @@ export class AdminProductFormComponent implements OnInit {
             size: '',
             cost: 0,
             price: 0,
-            image: '',
+            image: [{ url:'' }],
             section: '',
             category: '',
             subcategory: '',
             brand: ''
         }
         this.slide = false
-        this.slideURL = { url: '' }
-        //this.refreshCategories()
+        this.slideFile = { url: '' }
+        this.images = []
         this.categories = undefined
         this.subcategories = undefined
     }
@@ -181,33 +198,55 @@ export class AdminProductFormComponent implements OnInit {
         }
     }
 
-    /*refreshCategories(){
-        if (this.categories[0] != undefined){
-            this.category = this.categories[0]._id
-            this.subcategories = this.categories[0].subcategory
-            if (this.subcategories[0] != undefined) this.subcategory = this.subcategories[0]._id
-            else this.subcategory = ''
-        }
-        else {
-            this.category = ''
-            this.subcategory = ''
-            this.subcategories = undefined
-        }
-    }*/
-
     validateForm(){
         return this.product.section == undefined || this.product.section == '' ||
-            this.product.subcategory == undefined || this.product.subcategory == '' ||
+            //this.product.subcategory == undefined || this.product.subcategory == '' ||
             this.product.category == undefined || this.product.category == '' ||
-            this.product.brand == undefined || this.product.brand == ''
+            this.product.brand == undefined || this.product.brand == '' || this.images.length == 0 ||
+            (this.slide && this.slideFile.url == '')
     }
 
     ngOnInit() {
         
     }
 
+    getSlide(){
+        var reader = new FileReader()
+        reader.onload = (e) => {
+            this.slideFile.url = (<any>e.target).result
+        }
+        reader.readAsDataURL(this.slideFile.file)
+    }
+
+    getImage(image: File, i){
+        var reader = new FileReader()
+        reader.onload = (e) => {
+            this.images[i].url = (<any>e.target).result
+        }
+        reader.readAsDataURL(image)
+    }
+
+    inputFile(files: File[]){
+        for (let i = 0; i < files.length; i++) {
+            const fl = files[i];
+            this.images.push({ file: fl, url: '' })
+            this.getImage(fl, this.images.length-1)
+        }
+    }
+
+    swapMain(i){
+        var t = this.images[0]
+        this.images[0] = this.images[i]
+        this.images[i] = t
+    }
+
     test(){
-        console.log(this.categories[0])
+        console.log(this.images)
+        if(this.images.length != 0) console.log(this.images[0].color == 'undefined' || this.images[0].color == undefined)
+    }
+
+    getImageSrc(url: String){
+        return url.toLowerCase().startsWith('http') || url.toLowerCase().startsWith('data:') || url == ''? url: `${Constants.url}/images/${url}`
     }
 
 }

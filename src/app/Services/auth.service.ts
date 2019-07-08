@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { User } from '../interfaces/User'
 import { Router } from '@angular/router'
-import { Constants } from '../constants'
+import { Constants } from '../Constants'
 
 @Injectable({
     providedIn: 'root'

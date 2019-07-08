@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router'
 import { ProductService } from '../Services/product.service'
 import { Category } from '../interfaces/Category'
 import { Product } from '../interfaces/Product'
-import { Constants } from '../constants'
+import { Constants } from '../Constants'
 import { Title } from '@angular/platform-browser'
 import { Section } from '../interfaces/Section'
 
@@ -90,7 +90,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
         this.route.data.subscribe(d => {
             if(d.query) this.query.description = d.query
             if (d.description || d.sizes || d.minPrice || d.maxPrice) this.query = d
-            this.router.config.find(r => r.path === 'Catalogo').data = undefined
+            //this.router.config.find(r => r.path === 'Catalogo').data = undefined
+            this.router.config.forEach(r => {
+                r.data = undefined
+            });
         })
     }
 

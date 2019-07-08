@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
 import { Product } from '../interfaces/Product'
+import { Constants } from '../Constants';
 
 @Component({
     selector: 'app-product-tile',
@@ -25,6 +26,10 @@ export class ProductTileComponent implements OnInit {
         if (description.length > 50) description = description.substr(0, 50)
         description = description.replace(/ /g, '-')
         return `${description}-${this.product._id}`
+    }
+
+    getImage(url: String){
+        return url.toLowerCase().startsWith('http')? url: `${Constants.url}/images/${url}`
     }
 
 }

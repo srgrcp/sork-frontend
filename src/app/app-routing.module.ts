@@ -5,12 +5,14 @@ import { AdminComponent } from './admin/admin.component'
 import { AdminLoginComponent } from './admin/admin-login/admin-login.component'
 import { CatalogComponent } from './catalog/catalog.component'
 import { ProductPageComponent } from './product-page/product-page.component';
+import { CartComponent } from './cart/cart.component';
 
 const routes: Routes = [
     { path: '', component: RootComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'admin/login', component: AdminLoginComponent },
 
+    { path: 'Carrito', component: CartComponent },
     { path: 'Producto/:productURL', component: ProductPageComponent },
     
     { path: 'Catalogo/Pagina/:page', component: CatalogComponent },

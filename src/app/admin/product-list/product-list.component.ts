@@ -4,7 +4,7 @@ import { Product } from 'src/app/interfaces/Product'
 import { AlertComponent } from '../../alert/alert.component'
 import { Category } from '../../interfaces/Category'
 import { Section } from '../../interfaces/Section'
-import { Constants } from '../../constants'
+import { Constants } from '../../Constants'
 
 interface ServerData{ size: { min: number, max: number }, count: number }
 interface Subcategory{ _id?:String, name: String }

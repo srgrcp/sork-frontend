@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core'
 import { CategoryBrandService } from '../Services/category-brand.service'
 import { Category } from '../interfaces/Category'
-import { Constants } from '../constants'
+import { Constants } from '../Constants'
 import { Router } from "@angular/router"
 import { Section } from '../interfaces/Section';
 import { ProductService } from '../Services/product.service';

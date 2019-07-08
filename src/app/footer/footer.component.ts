@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Section } from '../interfaces/Section'
-import { Constants } from '../constants'
+import { Constants } from '../Constants'
 
 interface Brand{ _id?:String, name: String }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Title } from '@angular/platform-browser'
-import { Constants } from '../constants'
+import { Constants } from '../Constants'
 import { ProductService } from '../Services/product.service'
 import { Section } from '../interfaces/Section'
 
@@ -64,6 +64,10 @@ export class RootComponent implements OnInit {
             }
             this.slideShow()
         })
+    }
+
+    getImage(url: string){
+        return url.toLowerCase().startsWith('http')? url: `${Constants.url}/images/${url}`
     }
 
 }

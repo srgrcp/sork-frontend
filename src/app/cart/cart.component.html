@@ -1,0 +1,44 @@
+<app-nav (sectionEmitter)="sections = $event" (brandEmitter)="brands = $event"></app-nav>
+
+<div class="section">
+    <div class="container">
+        <h1 class="title">Carrito</h1>
+        <div class="columns">
+            <div class="column">
+                <div *ngFor="let item of items;let i = index">
+                    <app-product-row [index]="i" [item]="item"></app-product-row>
+                </div>
+            </div>
+            <div class="column is-one-quarter">
+                <div class="has-background-white">
+                    <div class="tabs is-small is-fullwidth">
+                        <ul>
+                            <li [class.is-active]="!tabPayu">
+                                <a (click)="tabPayu = false">Contra entrega</a>
+                            </li>
+                            <li [class.is-active]="tabPayu">
+                                <a (click)="tabPayu = true">PayU</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div [class.srg-hide]="tabPayu" class="padding-05">
+                        Acá va el formulario...
+                    </div>
+                    <div [class.srg-hide]="!tabPayu" class="padding-05">
+                        Acá va PayU...
+                    </div>
+                </div>
+                <div class="has-background-white padding-05">
+                    <div class="space-between has-text-weight-semibold">
+                        <p>TOTAL</p><p>{{getTotal() | currency: 'COP': '$ '}}</p>
+                    </div>
+                </div>
+                <div class="has-background-white" style="display: flex;justify-content: space-around">
+                    <div><img src="http://logos.payulatam.com/img/Colombia(2).png" style="max-height: 30px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer [brands]="brands" [sections]="sections"></app-footer>

@@ -1,7 +1,7 @@
 import { Category } from './Category'
 
 export interface Section{
-    _id?: String
-    name: String
+    _id?: string
+    name: string
     category?: [Category]
 }

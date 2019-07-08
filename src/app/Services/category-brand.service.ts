@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { Category } from '../interfaces/Category'
-import { Constants } from '../constants'
+import { Constants } from '../Constants'
 import { UserService } from './auth.service'
 import { Section } from '../interfaces/Section'
 

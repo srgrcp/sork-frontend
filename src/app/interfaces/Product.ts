@@ -1,19 +1,19 @@
 export interface Product {
-    _id?: String
-    description: String
-    ref: String
-    size: String
+    _id?: string
+    description: string
+    ref: string
+    size: string
     cost: Number
-    price: Number
-    image: String
-    section?: String// { _id?: String, name?: String }
-    category?: String// { _id?: String, name?: String }
-    subcategory?: String// { _id?: String, name?: String }
-    brand?: String// { _id?: String, name?: String }
-    sectionName?: String
-    categoryName?: String
-    subcategoryName?: String
-    brandName?: String
-    slide?: { _id?: String, url?: String }
+    price: number
+    image: [{ url: string, color?: string, variant?: string }]
+    section?: string// { _id?: string, name?: string }
+    category?: string// { _id?: string, name?: string }
+    subcategory?: string// { _id?: string, name?: string }
+    brand?: string// { _id?: string, name?: string }
+    sectionName?: string
+    categoryName?: string
+    subcategoryName?: string
+    brandName?: string
+    slide?: { _id?: string, url?: string }
     sizes?: Number[]
 }

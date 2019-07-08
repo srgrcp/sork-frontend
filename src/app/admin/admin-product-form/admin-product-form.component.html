@@ -21,8 +21,43 @@
         <input type="number" name="price" class="input" placeholder="Precio" [(ngModel)]="product.price" required>
     </div>
     <div class="field">
-        <label for="image" class="label">Imagen</label>
-        <input type="text" name="image" class="input" placeholder="URL" [(ngModel)]="product.image" required>
+        <label for="image" class="label">Imagenes</label>
+        <div class="field">
+            <div class="file has-text-centered is-boxed is-fullwidth is-large is-warning">
+                <label class="file-label">
+                    <input accept="image/*" (change)="inputFile($event.target.files);$event.target.value = null" class="file-input" type="file" name="resume" multiple>
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            &#8756;
+                        </span>
+                        <span class="file-label">
+                            {{images.length==0?'Subir Fotos':'Agregar más fotos'}}
+                        </span>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control" style="display: flex;flex-wrap: wrap;">
+                <div *ngFor="let image of images; let i = index" style="width: 100px;margin: 5px">
+                    <div *ngIf="image.url != ''" class="srg-image-4-3 notification"
+                        [style.background]="'url('+getImageSrc(image.url)+')'"
+                        [style.background-position]="'center'"
+                        [style.background-size]="'cover'"
+                        [style.margin-bottom]="'0'">
+                        <button (click)="images.splice(i, 1)" class="delete"></button>
+                    </div>
+                    <button type="button" (click)="swapMain(i)" [class.is-outlined]="i!=0" class="button is-fullwidth is-primary">Principal</button>
+                    <div class="select">
+                        <select name="color{{i}}" [(ngModel)]="image.color">
+                            <option [value]="undefined"> Sin color</option>
+                            <option *ngFor="let color of colors" [value]="color">{{color}}</option>
+                        </select>
+                    </div>
+                    <input name="variant{{i}}" [(ngModel)]="image.variant" class="input" type="text" placeholder="Variante">
+                </div>
+            </div>
+        </div>
     </div>
     <div class="field">
         <label class="label">Seleccionar Sección</label>
@@ -67,11 +102,6 @@
             </div>
         </div>
     </div>
-    <article *ngIf="product.subcategory == undefined || product.subcategory == ''" class="notification is-warning">
-        <p>
-            Debe seleccionar una subcategoría.
-        </p>
-    </article>
     <div class="field">
         <label class="label">Seleccionar Marca</label>
         <div class="control">
@@ -97,8 +127,23 @@
         </div>
     </div>
     <div *ngIf="slide" class="field">
-        <label for="slideURL" class="label">Slide <small class="has-text-weight-normal"> 1156x420</small> </label>
-        <input type="text" name="slideURL" class="input" placeholder="URL" [(ngModel)]="slideURL.url" required>
+        <div class="file has-text-centered is-boxed is-fullwidth is-large is-warning">
+            <label class="file-label">
+                <input name="slide" accept="image/*" (change)="slideFile.file = $event.target.files[0];getSlide()" class="file-input" type="file" required>
+                <span class="file-cta">
+                    <span class="file-icon">
+                        &#8756;
+                    </span>
+                    <span class="file-label">{{slideFile.url==''?'Subir Foto':'Cambiar Foto'}} <span class="is-size-6">1156x420</span></span>
+                </span>
+            </label>
+        </div>
+        <div class="control">
+            <img [src]="getImageSrc(slideFile.url)">
+            <button (click)="slideFile={url:''}" type="button" [class.srg-hide]="slideFile.url == ''" class="delete" style="position: absolute;top:0.5rem;right:0.5rem"></button>
+        </div>
+        <!--<label for="slideURL" class="label">Slide <small class="has-text-weight-normal"> 1156x420</small> </label>
+        <input type="text" name="slideURL" class="input" placeholder="URL" [(ngModel)]="slideURL.url" required>-->
     </div>
     <div class="field is-grouped is-grouped-right">
         <div class="control">

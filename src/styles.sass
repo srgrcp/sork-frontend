@@ -17,32 +17,39 @@ $primary: #7445ad
 //$link: #944cc0//00d16c//#07e077
 //$primary: $violet-1
 //$link: $c64-purple
-$link: #ffdd57
+//$link: #ffdd57
+$warning: #ffdd57
+$link: $warning-2
 
 $dropdown-item-hover-color: $d;
-$dropdown-item-hover-background-color: $link;
+$dropdown-item-hover-background-color: $warning;
 //$dropdown-item-active-background-color: $primary;
 $tabs-link-active-border-bottom-color: $primary
 $tabs-link-active-color: $primary
 $tabs-toggle-link-active-background-color: $primary
 $tabs-toggle-link-active-border-color: $primary
 
-$menu-item-active-background-color: $link
+$menu-item-active-background-color: $warning
 $menu-item-radius: 50px
 $menu-item-active-color: $d
 
-$radius: 0
+//$radius: 0
 $radius-small: 0
 $container-offset: 200px;
 $body-size: 14px
 
 //$custom-colors: ("beige-lighter": ($beige-lighter, #363636), "color-input": ($color-input, #363636))
 
+$divider-font-size: 1rem
 @import url('https://use.fontawesome.com/releases/v5.9.0/css/all.css')
 @import "cool-checkboxes.css"
 @import "bulma.sass"
 //@import "sass/preloader.sass"
 @import "sass/srg-utils.sass"
+
+@import "bulma-tooltip"
+@import "sass/bulma-badge.sass"
+@import "bulma-divider"
 
 .navbar-menu
     >div

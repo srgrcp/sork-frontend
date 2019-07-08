@@ -2,7 +2,7 @@
     <div class="card is-shadowless">
         <div class="card-image">
             <figure class="srg-image-4-3"
-                [style.background]="'url('+product.image+')'"
+                [style.background]="'url('+getImage(product.image[0].url)+')'"
                 [style.background-position]="'center'"
                 [style.background-size]="'cover'">
                 <!--<img [src]="product.image">-->
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div *ngIf="admin" class="card-footer">
-            <div class="card-footer-item"><label class="checkbox"><input type="checkbox"> Seleccionar</label></div>
+            <div class="card-footer-item"><!--<label class="checkbox"><input type="checkbox"> Seleccionar</label>--></div>
             <div class="card-footer-item dropdown is-right is-up" [class.is-active]="active" (click)="active = !active" [style.cursor]="'pointer'">
                 <div class="dropdown-trigger">
                     <span

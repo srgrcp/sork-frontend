@@ -23,6 +23,8 @@ import { AdminSectionComponent } from './admin/admin-section/admin-section.compo
 import { FooterComponent } from './footer/footer.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { CartComponent } from './cart/cart.component';
+import { ProductRowComponent } from './Cart/product-row/product-row.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { environment } from '../environments/environment';
     CatalogComponent,
     ProductPageComponent,
     AdminSectionComponent,
-    FooterComponent
+    FooterComponent,
+    CartComponent,
+    ProductRowComponent
   ],
   imports: [
     BrowserModule,

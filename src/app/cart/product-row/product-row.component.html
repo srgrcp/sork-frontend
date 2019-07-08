@@ -1,0 +1,48 @@
+<div class="columns is-mobile has-background-white is-gapless" style="margin-bottom: 0.5rem">
+    <div class="column is-one-fifth">
+        <figure class="srg-image-4-3"
+            [style.background]="'url('+getImage()+')'"
+            [style.background-position]="'center'"
+            [style.background-size]="'cover'">
+        </figure>
+    </div>
+    <div class="column container">
+        <div class="columns is-mobile is-gapless padding-05">
+            <div class="column">
+                <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{item.product.brandName}}</h1>
+                <h2 class="only-1-line">{{item.product.description}}</h2>
+                <div style="position: absolute;bottom:.5rem">
+                    <p>Talla {{item.size}}</p>
+                    <p>{{item.variant}}</p>
+                </div>
+            </div>
+            <div class="column is-two-fifths">
+                <div class="field has-addons level" style="-webkit-justify-content:flex-end;justify-content: flex-end">
+                    <div class="control">
+                        <button (click)="item.quantity = item.quantity<=1?1:item.quantity-1;update()" class="button is-small is-light">-</button>
+                    </div>
+                    <div class="control">
+                        <input (change)="item.quantity=item.quantity<1?1:item.quantity>max?max:item.quantity;update()" [(ngModel)]="item.quantity" class="input is-light is-small" type="number" name="quantity" min="1" style="width:2rem;text-align: center">
+                    </div>
+                    <div class="control">
+                        <button (click)="item.quantity = item.quantity >= max? max: item.quantity+1;update()" class="button is-small is-light">+</button>
+                    </div>
+                    <span class="has-text-right has-text-weight-semibold"> x {{item.product.price | currency: 'COP': '$ '}}</span>
+                </div>
+                <p class="has-text-right">Subtotal <span class="has-text-weight-semibold">{{item.product.price*item.quantity | currency: 'COP': '$ '}}</span></p>
+                <a (click)="delete()" style="position: absolute;bottom:.5rem;right:.5rem;margin: 0" class="has-text-weight-semibold has-text-danger">Eliminar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+        .only-1-line{ 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            margin-bottom: 0!important
+        } 
+    </style>

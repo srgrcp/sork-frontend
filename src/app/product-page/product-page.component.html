@@ -8,7 +8,7 @@
             <li><a routerLink="/Catalogo">Catálogo</a></li>
             <li><a routerLink="/{{product.sectionName}}">{{product.sectionName}}</a></li>
             <li><a routerLink="/{{product.sectionName}}/{{product.categoryName}}">{{product.categoryName}}</a></li>
-            <li><a routerLink="/{{product.sectionName}}/{{product.categoryName}}/{{product.subcategoryName}}">{{product.subcategoryName}}</a></li>
+            <li *ngIf="product.subcategoryName"><a routerLink="/{{product.sectionName}}/{{product.categoryName}}/{{product.subcategoryName}}">{{product.subcategoryName}}</a></li>
             <li><a routerLink="/{{product.sectionName}}/{{product.categoryName}}/{{product.subcategoryName}}/Marcas/{{product.brandName}}">{{product.brandName}}</a></li>
             <li class="is-active"><a>{{product.description}}</a></li>
         </ul>
@@ -17,32 +17,81 @@
     <div class="columns">
         <div class="column is-half">
             <figure class="srg-image-4-3"
-                [style.background]="'url('+product.image+')'"
+                [ngStyle]="getStyle(i)">
+                <!--[style.background]="'url('+getImage(product.image[i].url)+')'"
                 [style.background-position]="'center'"
                 [style.background-size]="'cover'">
-                <!--<img [src]="product.image">-->
+                <img [src]="product.image">-->
             </figure>
+            <div style="display: flex;flex-wrap: wrap">
+                <div
+                    *ngFor="let image of product.image; let j = index"
+                    (mouseover)="i = j"
+                    [style.margin]="j==0?'5px 5px 5px 0':'5px'"
+                    [style.border-style]="i==j?'solid':'none'"
+                    style="width: 64px;border-width: 2px"
+                    [className]="image.variant?'tooltip is-tooltip-bottom':''"
+                    [attr.data-tooltip]="image.variant">
+                    <div *ngIf="image.url != ''" class="srg-image-4-3 notification"
+                        [style.background]="'url('+getImage(image.url)+')'"
+                        [style.background-position]="'center'"
+                        [style.background-size]="'cover'"
+                        [style.margin-bottom]="'0'">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="column">
             <h1 class="title">{{product.brandName}}</h1>
             <h2 class="subtitle">{{product.description}}</h2><br>
             <h1 class="title">{{product.price | currency: 'COP': '$ '}}</h1>
-            <div class="field">
-                <label class="label">Talla <a href="{{url}}#Tallas">Cómo elegir talla.</a></label>
-                <div class="control select">
-                    <select [(ngModel)]="size" name="size" id="size">
-                        <option value="" disabled>Seleccionar Talla</option>
-                        <option *ngFor="let s of product.sizes" [value]="s">{{s}}</option>
-                    </select>
+
+            <div class="field has-addons">
+                <div class="control">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <button (click)="quantity = quantity<=1?1:quantity-1" class="button is-light">-</button>
+                        </div>
+                        <div class="control">
+                            <input (change)="quantity=quantity<1?1:quantity>max?max:quantity" [(ngModel)]="quantity" class="input is-light" type="number" name="quantity" style="width:4rem;text-align: center">
+                        </div>
+                        <div class="control">
+                            <button (click)="quantity = quantity >= max? max: quantity+1" class="button is-light" style="border-top-right-radius: 4px;border-bottom-right-radius: 4px">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="control level"><span class="subtitle">&nbsp;&nbsp;{{product.price*quantity | currency: 'COP': '$ '}}</span></div>
+            </div>
+            
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <label class="label">Talla <a href="{{url}}#Tallas">Cómo elegir talla.</a></label>
+                    <div class="control select is-rounded" [class.is-fullwidth]="variants.length != 0">
+                        <select [(ngModel)]="size" name="size" id="size">
+                            <option value="" disabled>Seleccionar Talla</option>
+                            <option *ngFor="let s of product.sizes" [value]="s">{{s}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div *ngIf="variants.length != 0" class="control is-expanded">
+                    <label class="label">Variante</label>
+                    <div class="control select is-fullwidth is-rounded">
+                        <select [(ngModel)]="variant" name="variant" id="variant">
+                            <option value="" disabled>Seleccionar Variante</option>
+                            <option *ngFor="let v of variants" [value]="v">{{v}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="buttons are-medium">
-                <button (click)="addCartItem()" class="button is-rounded is-primary">🛒 Agregar al carrito</button>
-                <button class="button is-rounded is-primary is-outlined">🏷 Comprar Ahora</button>
+                <button (click)="addCartItem()" class="button is-rounded is-primary is-fullwidth">🛒 Agregar al carrito</button>
+                <button class="button is-rounded is-primary is-outlined is-fullwidth">🏷 Comprar Ahora</button>
             </div>
             <div class="notification is-warning"><h2 class="subtitle">Compra ahora y paga cuando el producto llegue a tu casa!</h2></div>
         </div>
     </div>
+
+    <div class="is-divider" [attr.data-content]="title"></div>
 
     <div class="columns">
         <div class="column">
@@ -141,3 +190,5 @@
 </div>
 
 <app-footer [brands]="brands" [sections]="sections"></app-footer>
+
+<app-alert></app-alert>

@@ -94,9 +94,12 @@
             </div>
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-primary is-rounded">
-                    🛒Carrito {{cartCount}}
-                    </a>
+                    <button *ngIf="cartCount!=0" routerLink="/Carrito" class="button is-primary is-rounded has-badge-rounded has-badge-outlined" [attr.data-badge]="cartCount">
+                        🛒Carrito
+                    </button>
+                    <button *ngIf="cartCount==0" routerLink="/Carrito" class="button is-primary is-rounded">
+                        🛒Carrito
+                    </button>
                 </div>
             </div>
         </div>

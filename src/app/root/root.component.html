@@ -3,7 +3,7 @@
 <div class="container" style="line-height:0">
     <div class="slider-container">
         <a *ngFor="let slide of slides" [className]="slide.class" routerLink="/Producto/{{slide.product.description}}-{{slide.product._id}}">
-            <img src="{{slide.url}}" style="width:100%">
+            <img src="{{getImage(slide.url)}}" style="width:100%">
             <!--<div class="slider-content">
                 <h1 class="title has-text-light">
                 Compra fácil 👌

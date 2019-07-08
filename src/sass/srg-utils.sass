@@ -90,6 +90,8 @@ span
     visibility: hidden
 .padding
     padding: 1.25rem
+.padding-05
+    padding: 0.5rem
 .parallax
     background-image: url("https://cnnespanol2.files.wordpress.com/2019/03/adidas-got-uno.jpg")
     background-attachment: fixed
@@ -106,3 +108,42 @@ span
     background: $grey-lighter
 ::-webkit-scrollbar-thumb:hover
     background: $grey-light
+@-webkit-keyframes fadeIn
+    from
+        opacity: 0
+    to
+        opacity: 1
+@keyframes fadeIn
+    from
+        opacity: 0
+    to
+        opacity: 1
+.fadeIn
+    -webkit-animation-name: fadeIn
+    animation-name: fadeIn
+@-webkit-keyframes fadeOut
+    from
+        opacity: 1
+    to
+        opacity: 0
+@keyframes fadeOut
+    from
+        opacity: 1
+    to
+        opacity: 0
+.fadeOut
+    -webkit-animation-name: fadeOut
+    animation-name: fadeOut
+.animated
+    -webkit-animation-duration: 0.5s
+    animation-duration: 0.5s
+    -webkit-animation-fill-mode: both
+    animation-fill-mode: both
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
+input[type=number]
+    -moz-appearance:textfield
+.space-between
+    display: flex
+    justify-content: space-between

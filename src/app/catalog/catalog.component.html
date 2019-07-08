@@ -49,7 +49,7 @@
                         <label class="label">Tallas</label>
                         <div class="srg-box">
                             <div *ngFor="let x of arraySizes; let i = index"  class="control">
-                                <div class="b-checkbox is-primary is-unselectable">
+                                <div class="b-checkbox is-warning is-unselectable">
                                     <input class="styled" type="checkbox" [(ngModel)]="x.checked" id="size{{i}}" (change)="sizeCheck(i, x.checked)">
                                     <label for="size{{i}}">
                                         <span> Talla {{i+serverData.size.min}}</span>

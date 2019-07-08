@@ -1,5 +1,5 @@
 export interface Category{
-    _id?: String
-    name: String
-    subcategory?: [{ _id?:String, name: String }]
+    _id?: string
+    name: string
+    subcategory?: [{ _id?:string, name: string }]
 }
