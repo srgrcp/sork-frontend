@@ -5,7 +5,7 @@ import { Router } from '@angular/router'
 import { Product } from '../interfaces/Product'
 import { Constants } from '../Constants'
 import { UserService } from './auth.service'
-import { Cart, Item } from '../interfaces/Cart';
+import { Cart, Item, Order } from '../interfaces/Cart';
 
 interface Id { _id: string }
 interface Slide{ _id: String, url: String, product: { _id: String, description: String } }
@@ -21,6 +21,10 @@ export class ProductService {
 
     cart: Cart = JSON.parse(localStorage.getItem('cart'))
     listeners: Function[] = []
+
+    checkout(order: Order, method: number){
+        return this.http.post(`${this.API_URI}/store/checkout`, { order, method })
+    }
 
     getCart():Observable<Cart>{
         return new Observable(observer => {
@@ -52,6 +56,12 @@ export class ProductService {
             return
         }
         this.cart.items[i] = item
+        localStorage.setItem('cart', JSON.stringify(this.cart))
+        for (let i = 0; i < this.listeners.length; i++) this.listeners[i]()
+    }
+
+    deleteCart(){
+        this.cart = { items: [] }
         localStorage.setItem('cart', JSON.stringify(this.cart))
         for (let i = 0; i < this.listeners.length; i++) this.listeners[i]()
     }

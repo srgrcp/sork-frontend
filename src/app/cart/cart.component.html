@@ -11,21 +11,72 @@
             </div>
             <div class="column is-one-quarter">
                 <div class="has-background-white">
-                    <div class="tabs is-small is-fullwidth">
+                    <!--<div class="tabs is-small is-fullwidth">
                         <ul>
                             <li [class.is-active]="!tabPayu">
-                                <a (click)="tabPayu = false">Contra entrega</a>
+                                <a (click)="tabPayu = 0">Contra entrega</a>
                             </li>
                             <li [class.is-active]="tabPayu">
-                                <a (click)="tabPayu = true">PayU</a>
+                                <a (click)="tabPayu = 1">PayU</a>
                             </li>
                         </ul>
+                    </div>-->
+                    <div class="select is-fullwidth">
+                        <select [(ngModel)]="tabPayu" name="tab" id="tab" style="border:none;border-radius:0">
+                            <option [value]="0">Pago Contra Entrega</option>
+                            <option [value]="1">Otros Medios de Pago</option>
+                        </select>
                     </div>
-                    <div [class.srg-hide]="tabPayu" class="padding-05">
-                        Acá va el formulario...
+                    <div class="padding-05">
+                        <!--FORMULARÍO-COMPARTIDO-->
+                        <div class="field">
+                            <label class="label" for="name">Nombre</label>
+                            <div class="control">
+                                <input [(ngModel)]="buyer.name" class="input is-light" name="name" type="text" placeholder="Nombre">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="address">Dirección</label>
+                            <div class="control">
+                                <input [(ngModel)]="buyer.address" class="input is-light" name="address" type="text" placeholder="Dirección">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="phone">Celular</label>
+                            <div class="control">
+                                <input [(ngModel)]="buyer.phone" class="input is-light" name="phone" type="number" placeholder="Celular">
+                            </div>
+                        </div>
                     </div>
-                    <div [class.srg-hide]="!tabPayu" class="padding-05">
-                        Acá va PayU...
+                    <div [class.srg-hide]="tabPayu==1" class="padding-05">
+                        <!--CONTRA-ENTREGA-->
+                        <div class="field">
+                            <label class="label" for="info">Información adicional (Opcional)</label>
+                            <div class="control">
+                                <textarea [(ngModel)]="info" class="textarea is-light has-fixed-size" name="info" id="info" placeholder="Acá puedes especificar en que días y hora puedes recibir tu pedido."></textarea>
+                            </div>
+                        </div>
+                        <div class="buttons is-right">
+                            <button (click)="checkout()" [class.is-loding]="waitCheckout" class="button is-primary">Aceptar</button>
+                        </div>
+                    </div>
+                    <div [class.srg-hide]="tabPayu==0" class="padding-05">
+                        <!--PAYU-->
+                        <div class="field">
+                            <label class="label" for="email">Correo</label>
+                            <div class="control">
+                                <input [(ngModel)]="buyer.email" class="input is-light" name="email" type="text" placeholder="Correo">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="info">Información adicional (Opcional)</label>
+                            <div class="control">
+                                <textarea [(ngModel)]="info" class="textarea is-light has-fixed-size" name="info" id="info" placeholder="Acá puedes especificar en que días y hora puedes recibir tu pedido."></textarea>
+                            </div>
+                        </div>
+                        <div class="buttons is-right">
+                            <button (click)="checkout()" class="button is-success">Ir a PayU</button>
+                        </div>
                     </div>
                 </div>
                 <div class="has-background-white padding-05">
@@ -42,3 +93,7 @@
 </div>
 
 <app-footer [brands]="brands" [sections]="sections"></app-footer>
+
+
+<form class="srg-hide" #payuForm method="post" action="https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/">
+</form>

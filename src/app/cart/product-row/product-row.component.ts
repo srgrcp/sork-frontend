@@ -18,12 +18,9 @@ export class ProductRowComponent implements OnInit {
         private productService: ProductService
     ) { }
 
-    ngOnInit() {
-        if(this.index==0) console.log(this.item)
-    }
+    ngOnInit() { }
 
     getImage(){
-        if(this.index==0) console.log('GetImage', this.item, this.item.product.image[0].url)
         var url: string
         if (this.item.variant != undefined) {
             url = this.item.product.image.find(im => im.variant == this.item.variant).url
