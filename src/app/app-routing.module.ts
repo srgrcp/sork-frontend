@@ -6,6 +6,7 @@ import { AdminLoginComponent } from './admin/admin-login/admin-login.component'
 import { CatalogComponent } from './catalog/catalog.component'
 import { ProductPageComponent } from './product-page/product-page.component';
 import { CartComponent } from './cart/cart.component';
+import { OrdersComponent } from './orders/orders.component';
 
 const routes: Routes = [
     { path: '', component: RootComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
     { path: 'admin/login', component: AdminLoginComponent },
 
     { path: 'Carrito', component: CartComponent },
+    { path: 'Pedidos', component: OrdersComponent },
     { path: 'Producto/:productURL', component: ProductPageComponent },
     
     { path: 'Catalogo/Pagina/:page', component: CatalogComponent },

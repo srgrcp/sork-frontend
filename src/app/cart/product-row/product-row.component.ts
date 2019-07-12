@@ -12,6 +12,8 @@ export class ProductRowComponent implements OnInit {
 
     @Input() item: Item
     @Input() index: number
+    @Input() admin: boolean
+    @Input() order: boolean
     max: number = Constants.max_product_per_client
 
     constructor(
@@ -38,6 +40,13 @@ export class ProductRowComponent implements OnInit {
 
     update(){
         this.productService.updateCartItem(this.item, this.index)
+    }
+
+    getURL(product: any){
+        let description = product.description
+        if (description.length > 50) description = description.substr(0, 50)
+        description = description.replace(/ /g, '-')
+        return `${description}-${product._id}`
     }
 
 }

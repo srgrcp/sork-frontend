@@ -25,6 +25,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CartComponent } from './cart/cart.component';
 import { ProductRowComponent } from './Cart/product-row/product-row.component';
+import { AdminOrderListComponent } from './admin/admin-order-list/admin-order-list.component';
+import { AdminOrderDetailComponent } from './admin/admin-order-list/admin-order-detail/admin-order-detail.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderRowComponent } from './orders/order-row/order-row.component';
+import { AdminContentComponent } from './admin/admin-content/admin-content.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +51,12 @@ import { ProductRowComponent } from './Cart/product-row/product-row.component';
     AdminSectionComponent,
     FooterComponent,
     CartComponent,
-    ProductRowComponent
+    ProductRowComponent,
+    AdminOrderListComponent,
+    AdminOrderDetailComponent,
+    OrdersComponent,
+    OrderRowComponent,
+    AdminContentComponent
   ],
   imports: [
     BrowserModule,

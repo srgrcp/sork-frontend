@@ -1,0 +1,27 @@
+<td>
+    <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{order.shortid}}</h1>
+    <p>{{order.method==0?'Pago Contra Entrega':'PayU'}}</p>
+</td>
+<td>
+    <span [className]="'tag '+states[order.state].class">{{states[order.state].text}}</span>
+</td>
+<td>
+    <p><span class="has-text-weight-semibold">{{order.buyer.name}}</span> {{order.buyer.phone}}</p>
+    <p *ngIf="order.buyer.email">{{order.buyer.email}}</p>
+    <p>{{order.buyer.address}}, {{order.buyer.city}}</p>
+    <p *ngIf="order.info"><strong>Nota </strong>{{order.info}}</p>
+</td>
+<td>
+    <app-product-row *ngFor="let item of order.items" [item]="item"></app-product-row>
+</td>
+
+<style>
+    .only-1-line{ 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0!important
+    } 
+</style>

@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams, HttpHeaders, HttpRequest } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { Router } from '@angular/router'
-import { Product } from '../interfaces/Product'
+import { Product, Slide } from '../interfaces/Product'
 import { Constants } from '../Constants'
 import { UserService } from './auth.service'
-import { Cart, Item, Order } from '../interfaces/Cart';
+import { Cart, Item, Order } from '../interfaces/Cart'
 
 interface Id { _id: string }
-interface Slide{ _id: String, url: String, product: { _id: String, description: String } }
+//interface Slide{ _id: String, url: String, product: { _id: String, description: String } }
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,15 @@ export class ProductService {
 
     checkout(order: Order, method: number){
         return this.http.post(`${this.API_URI}/store/checkout`, { order, method })
+    }
+
+    getOrders(page: number, query?: any):Observable<Order[]>{
+        return query == undefined? this.http.get<Order[]>(`${this.API_URI}/store/orders/${page}`):
+            this.http.post<Order[]>(`${this.API_URI}/store/orders/${page}`, query)
+    }
+
+    updateOrder(_id: string, state: number, note: string){
+        return this.http.post(`${this.API_URI}/store/update-order`, { token: UserService.token, _id, state, note })
     }
 
     getCart():Observable<Cart>{

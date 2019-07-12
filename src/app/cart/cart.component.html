@@ -36,20 +36,32 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label" for="address">Dirección</label>
-                            <div class="control">
-                                <input [(ngModel)]="buyer.address" class="input is-light" name="address" type="text" placeholder="Dirección">
-                            </div>
-                        </div>
-                        <div class="field">
                             <label class="label" for="phone">Celular</label>
                             <div class="control">
                                 <input [(ngModel)]="buyer.phone" class="input is-light" name="phone" type="number" placeholder="Celular">
                             </div>
                         </div>
+                        <div class="field">
+                            <label class="label" for="address">Dirección</label>
+                            <div class="control">
+                                <input [(ngModel)]="buyer.address" class="input is-light" name="address" type="text" placeholder="Dirección">
+                            </div>
+                        </div>
                     </div>
                     <div [class.srg-hide]="tabPayu==1" class="padding-05">
                         <!--CONTRA-ENTREGA-->
+                        <div class="field">
+                            <label class="label">Ciudad</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select [(ngModel)]="buyer.city" name="city" style="border-color: whitesmoke">
+                                        <option value="" disabled>Selecciona tu Ciudad</option>
+                                        <option value="Barranquilla">Barranquilla</option>
+                                        <option value="Soledad">Soledad</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="field">
                             <label class="label" for="info">Información adicional (Opcional)</label>
                             <div class="control">
@@ -62,6 +74,12 @@
                     </div>
                     <div [class.srg-hide]="tabPayu==0" class="padding-05">
                         <!--PAYU-->
+                        <div class="field">
+                            <label class="label">Ciudad</label>
+                            <div class="control">
+                                <input [(ngModel)]="buyer.city" class="input is-light" type="text" placeholder="Ciudad">
+                            </div>
+                        </div>
                         <div class="field">
                             <label class="label" for="email">Correo</label>
                             <div class="control">

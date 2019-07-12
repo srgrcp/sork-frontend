@@ -37,9 +37,10 @@
         </div>
     </div>
 </section>
-<br>
 
-<div [className]="tabIndex==0?'container srg-btm':'srg-hide'">
+<div class="section">
+
+<div [className]="tabIndex==0?'container':'srg-hide'">
     <!--<h1 class="title">Producto <a class="is-size-6 has-text-primary">test</a></h1>-->
 
     <div class="tabs is-fullwidth is-hidden-tablet">
@@ -104,12 +105,22 @@
 </div>
 
 <!--<app-product (updateProducts)="updateProducts()" [className]="tabIndex==0?'':'srg-hide'"></app-product>-->
-<div class="srg-btm" [class.srg-hide]="tabIndex!=1">
+<div [class.srg-hide]="tabIndex!=1">
     <app-product-list
     (editProduct)="editProduct($event)"
     [brands]="brands"
     [sections]="sections"
     ></app-product-list>
+</div>
+
+<div class="container" [class.srg-hide]="tabIndex!=2">
+    <app-admin-content></app-admin-content>
+</div>
+
+<div class="container" [class.srg-hide]="tabIndex!=3">
+    <app-admin-order-list></app-admin-order-list>
+</div>
+
 </div>
 
 <app-footer [brands]="brands" [sections]="sections"></app-footer>

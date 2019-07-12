@@ -1,0 +1,60 @@
+<div class="tabs is-fullwidth">
+    <ul>
+        <li [class.is-active]="contentIndex==0">
+            <a (click)="contentIndex=0">Slides</a></li>
+        <li [class.is-active]="contentIndex==1">
+            <a (click)="contentIndex=1">Index</a></li>
+    </ul>
+</div>
+
+<div [class.srg-hide]="contentIndex!=0" class="container">
+    <div class="columns">
+        <!--CREAR-SLIDE-->
+        <div class="column is-one-third">
+            <form (ngSubmit)="createSlide()">
+                <h1><span class="has-text-weight-semibold">Crear Slide </span><small>1156x420</small></h1>
+                <div class="field">
+                    <div class="file is-boxed has-text-centered is-warning">
+                        <label class="file-label" style="width:100%">
+                            <input (change)="inputFile($event.target.files[0]);$event.target.value = null" accept="image/*" class="file-input" type="file" name="slidefile">
+                            <span class="file-cta" style="width:100%">
+                                <span class="file-icon">
+                                    &#8756;
+                                </span>
+                                <span class="file-label">
+                                    {{slide?'Cambiar Imagen':'Seleccionar archivo'}}
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div [class.srg-hide]="slideURL==''" class="field">
+                    <img [src]="slideURL">
+                </div>
+                <div class="field">
+                    <label class="label" for="ref">URL</label>
+                    <div class="control">
+                        <input [(ngModel)]="ref" class="input" name="ref" id="ref" type="text" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="description">Descripción</label>
+                    <div class="control">
+                        <input [(ngModel)]="description" class="input" name="description" id="description" type="text" placeholder="Descripción">
+                    </div>
+                </div>
+                <div class="field">
+                    <button [disabled]="ref == '' || slide == undefined || description == ''" class="button is-primary">Crear</button>
+                </div>
+            </form>
+        </div>
+        <!--EDITAR-SLIDES-->
+        <div class="column">
+            <div *ngFor="let slide of slides">
+                <img [src]="getURL(slide.url)">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div [class.srg-hide]="content!=1" class="container"></div>

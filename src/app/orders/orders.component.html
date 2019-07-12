@@ -1,0 +1,47 @@
+<app-nav (sectionEmitter)="sections = $event" (brandEmitter)="brands = $event"></app-nav>
+
+<div class="section">
+    <div class="container">
+        <div style="width:100%;overflow:auto">
+            <table class="table is-fullwidth is-hoverable" style="min-width:950px">
+                <thead>
+                    <tr>
+                        <th class="has-text-centered" colspan="4">Lista de Pedidos</th>
+                    </tr>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Estado</th>
+                        <th>Información</th>
+                        <th>Lista de productos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of orders">
+                        <td>
+                            <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{order.shortid}}</h1>
+                            <p>{{order.method==0?'Pago Contra Entrega':'PayU'}}</p><br>
+                            <a>Enviar Mensaje</a><br>
+                            <a class="has-text-danger">Cancelar Pedido</a>
+                        </td>
+                        <td>
+                            <span [className]="'tag '+states[order.state].class">{{states[order.state].text}}</span>
+                        </td>
+                        <td>
+                            <p><span class="has-text-weight-semibold">{{order.buyer.name}}</span> {{order.buyer.phone}}</p>
+                            <p *ngIf="order.buyer.email">{{order.buyer.email}}</p>
+                            <p>{{order.buyer.address}}, {{order.buyer.city}}</p>
+                            <p *ngIf="order.info"><strong>Nota </strong>{{order.info}}</p>
+                        </td>
+                        <td>
+                            <app-product-row *ngFor="let item of order.items" [order]="true" [item]="item"></app-product-row>
+                            <p class="has-text-weight-semibold has-text-right">TOTAL {{order.total | currency: 'COP': '$ '}}</p>
+                        </td>
+                        <!--<app-order-row [order]="order"></app-order-row>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<app-footer [brands]="brands" [sections]="sections"></app-footer>

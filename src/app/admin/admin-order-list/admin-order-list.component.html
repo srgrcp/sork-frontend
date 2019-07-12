@@ -1,0 +1,51 @@
+<div style="width: 100%;overflow:auto">
+    <table [class.srg-hide]="windowIndex!=0" class="table table-text-centered is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th colspan="8">Lista de Pedidos</th>
+            </tr>
+            <tr>
+                <th><a (click)="sort('shortid')" class="is-unselectable has-text-dark">ID</a></th>
+                <th><a (click)="sort('state')" class="is-unselectable has-text-dark">Estado</a></th>
+                <th><a (click)="sort('method')" class="is-unselectable has-text-dark">Metodo</a></th>
+                <!--<th><a (click)="sort('buyer','name')" class="is-unselectable has-text-dark">Comprador</a></th>-->
+                <th><a (click)="sort('buyer','address')" class="is-unselectable has-text-dark">Dirección</a></th>
+                <th><a (click)="sort('buyer','city')" class="is-unselectable has-text-dark">Ciudad</a></th>
+                <th><a (click)="sort('total')" class="is-unselectable has-text-dark">Total</a></th>
+                <th><a (click)="sort('created')" class="is-unselectable has-text-dark">Creado</a></th>
+                <th><a (click)="sort('updated')" class="is-unselectable has-text-dark">Modificado</a></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th><a (click)="sort('shortid')" class="is-unselectable has-text-dark">ID</a></th>
+                <th><a (click)="sort('state')" class="is-unselectable has-text-dark">Estado</a></th>
+                <th><a (click)="sort('method')" class="is-unselectable has-text-dark">Metodo</a></th>
+                <!--<th><a (click)="sort('buyer','name')" class="is-unselectable has-text-dark">Comprador</a></th>-->
+                <th><a (click)="sort('buyer','address')" class="is-unselectable has-text-dark">Dirección</a></th>
+                <th><a (click)="sort('buyer','city')" class="is-unselectable has-text-dark">Ciudad</a></th>
+                <th><a (click)="sort('total')" class="is-unselectable has-text-dark">Total</a></th>
+                <th><a (click)="sort('created')" class="is-unselectable has-text-dark">Creado</a></th>
+                <th><a (click)="sort('updated')" class="is-unselectable has-text-dark">Modificado</a></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr *ngFor="let order of orders">
+                <td><a (click)="detail.order=order;windowIndex=1">{{order.shortid}}</a></td>
+                <td><span [className]="'tag '+states[order.state].class">{{states[order.state].text}}</span></td>
+                <td>{{order.method==0?'Contra Entrega':'PayU'}}</td>
+                <!--<td>{{order.buyer.name}}</td>-->
+                <td>{{order.buyer.address}}</td>
+                <td>{{order.buyer.city}}</td>
+                <td>{{order.total | currency: 'COP': '$ '}}</td>
+                <td>{{order.created | date: 'dd MMM yy hh:mm aaaaa'}}m</td>
+                <td>{{order.updated | date: 'dd MMM yy hh:mm aaaaa'}}m</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section" [class.srg-hide]="windowIndex!=1">
+    <a class="is-size-4" (click)="windowIndex=0">&#10602; Volver</a>
+    <app-admin-order-detail #detail [order]="{ items: [], buyer: {}, state:0 }"></app-admin-order-detail>
+</div>

@@ -17,6 +17,7 @@ export class CartComponent implements OnInit, OnDestroy {
     buyer: BuyerInfo = {
         name: '',
         address: '',
+        city: '',
         phone: undefined,
         email: ''
     }
@@ -53,6 +54,17 @@ export class CartComponent implements OnInit, OnDestroy {
     }
 
     valid(){
+        if (this.buyer.city == undefined || this.buyer.city == ''){
+            toast({
+                message: `Debe seleccionar una ciudad.`,
+                position: 'bottom-center',
+                type: 'is-danger',
+                dismissible: true,
+                closeOnClick: true,
+                animate: { in: 'fadeIn', out: 'fadeOut' }
+            })
+            return false
+        }
         if (this.items.length < 1) {
             toast({
                 message: `¡No hay productos en el carrito! 😱😱`,
@@ -141,9 +153,9 @@ export class CartComponent implements OnInit, OnDestroy {
                 let res = <Order>resu
                 if (res.shortid != undefined) {
                     this.productService.deleteCart()
-                    let orders: Order[] = JSON.parse(localStorage.getItem('orders'))
-                    if (orders != undefined && orders.length != 0) orders.push(order)
-                    else orders = [order]
+                    let orders: string[] = JSON.parse(localStorage.getItem('orders'))
+                    if (orders != undefined && orders.length != 0) orders.push(order._id)
+                    else orders = [order._id]
                     localStorage.setItem('orders', JSON.stringify(orders))
                     toast({
                         message: `
@@ -166,6 +178,7 @@ export class CartComponent implements OnInit, OnDestroy {
                     this.buyer = {
                         name: '',
                         address: '',
+                        city: '',
                         phone: undefined,
                         email: ''
                     }
@@ -210,7 +223,7 @@ export class CartComponent implements OnInit, OnDestroy {
                         test: 1,
                         buyerEmail: order.buyer.email,
                         responseUrl: Constants.url,
-                        confirmationUrl: `${Constants.url}/api/store/confirm-payu`,
+                        confirmationUrl: Constants.payu_url,
                         algorithmSignature: 'SHA256',
                         mobilePhone: order.buyer.phone,
                         tax: 0
@@ -224,7 +237,6 @@ export class CartComponent implements OnInit, OnDestroy {
                         return {}
                     }, {})
                     this.payuForm.nativeElement.submit()
-                    //this.renderer.selectRootElement(this.payuForm.nativeElement).submit()
                 }
                 else toast({
                     message: `
@@ -245,7 +257,6 @@ export class CartComponent implements OnInit, OnDestroy {
                 this.waitCheckout = false
             })
         }
-        //this.waitCheckout = false
     }
 
     test(){

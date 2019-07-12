@@ -4,7 +4,7 @@ import { Constants } from '../Constants'
 import { ProductService } from '../Services/product.service'
 import { Section } from '../interfaces/Section'
 
-interface Slide{ index?: Number, _id: String, url: String, product: { _id: String, description: String }, class?: String }
+interface Slide{ index?: Number, _id?: String, url: String, product?: { _id: String, description: String }, class?: String }
 interface Brand{ _id?:String, name: String }
 
 @Component({

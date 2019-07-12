@@ -1,0 +1,72 @@
+<div class="columns">
+    <div class="column">
+        <h1 class="title">{{order.shortid}}&nbsp;<span [className]="'tag is-medium '+states[order.state].class">{{states[order.state].text}}</span></h1>
+        <h2 class="subtitle">{{order.method==0?'Pago Contra Entrega':'PayU'}}</h2>
+
+        <div class="columns">
+            <div class="column">
+                <p class="has-text-weight-semibold">{{order.buyer.name}}</p>
+                <p>{{order.buyer.phone}}</p>
+                <p *ngIf="order.buyer.email">{{order.buyer.email}}</p>
+                <p>{{order.buyer.address}}</p>
+                <p>{{order.buyer.city}}</p>
+                <p *ngIf="order.info"><strong>Nota </strong>{{order.info}}</p>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <div class="select">
+                        <select [disabled]="order.state==5" (change)="updateOrder()" [(ngModel)]="order.state" name="state">
+                            <option value="0">Pendiente</option>
+                            <option value="1">Completado</option>
+                            <option value="2">En Camino</option>
+                            <option value="3">Fallido</option>
+                            <option value="4">Reembolsado</option>
+                            <option value="5" disabled>Proceso de Pago</option>
+                            <option value="6" disabled>Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <form (ngSubmit)="updateOrder()">
+                    <div class="field">
+                        <label class="label">Nota</label>
+                        <div class="control">
+                            <textarea class="textarea has-fixed-size" name="note" [(ngModel)]="order.note"></textarea>
+                        </div>
+                    </div>
+                    <div class="control buttons is-right"><button class="button is-primary">Aceptar</button></div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    <div class="column">
+        <h2 class="subtitle">Lista de Productos</h2>
+        <div *ngFor="let item of order.items">
+            <app-product-row [admin]="true" [item]="item"></app-product-row>
+        </div>
+        <p class="has-text-weight-semibold has-text-right">TOTAL {{order.total | currency: 'COP': '$ '}}</p>
+    </div>
+</div>
+
+<div class="columns">
+    <div class="column">
+
+    </div>
+    <div class="column">
+        
+    </div>
+</div>
+
+<table *ngIf="this.order.payu_info != undefined" class="table is-fullwidth is-hoverable">
+    <thead>
+        <tr>
+            <th class="has-text-centered" colspan="2">Información de PayU</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of fillTable()">
+            <td>{{row.k}}</td>
+            <td>{{row.v}}</td>
+        </tr>
+    </tbody>
+</table>

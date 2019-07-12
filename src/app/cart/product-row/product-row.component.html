@@ -1,23 +1,24 @@
 <div class="columns is-mobile has-background-white is-gapless" style="margin-bottom: 0.5rem">
-    <div class="column is-one-fifth">
+    <div [ngClass]="admin?'is-one-fifth-tablet is-one-quarter-mobile':'is-one-quarter-tablet is-one-third-mobile'" class="column is-variable">
         <figure class="srg-image-4-3"
             [style.background]="'url('+getImage()+')'"
             [style.background-position]="'center'"
             [style.background-size]="'cover'">
         </figure>
     </div>
-    <div class="column container">
+    <div class="column container" [style.padding-bottom]="!admin && !order?'3rem!important':''">
         <div class="columns is-mobile is-gapless padding-05">
             <div class="column">
-                <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{item.product.brandName}}</h1>
-                <h2 class="only-1-line">{{item.product.description}}</h2>
-                <div style="position: absolute;bottom:.5rem">
+                <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{admin?item.product.ref:item.product.brandName}}</h1>
+                <a routerLink="/Producto/{{getURL(item.product)}}" class="only-1-line">{{item.product.description}}</a>
+                <p *ngIf="admin || order">{{item.variant}} Talla {{item.size}}</p>
+                <div *ngIf="!admin && !order" style="position: absolute;bottom:.5rem">
                     <p>Talla {{item.size}}</p>
                     <p>{{item.variant}}</p>
                 </div>
             </div>
             <div class="column is-two-fifths">
-                <div class="field has-addons level" style="-webkit-justify-content:flex-end;justify-content: flex-end">
+                <div *ngIf="!admin && !order" class="field has-addons level" style="-webkit-justify-content:flex-end;justify-content: flex-end">
                     <div class="control">
                         <button (click)="item.quantity = item.quantity<=1?1:item.quantity-1;update()" class="button is-small is-light">-</button>
                     </div>
@@ -29,20 +30,21 @@
                     </div>
                     <span class="has-text-right has-text-weight-semibold"> x {{item.product.price | currency: 'COP': '$ '}}</span>
                 </div>
+                <p *ngIf="admin || order" class="has-text-right">{{item.quantity}} x {{item.product.price | currency: 'COP': '$ '}}</p>
                 <p class="has-text-right">Subtotal <span class="has-text-weight-semibold">{{item.product.price*item.quantity | currency: 'COP': '$ '}}</span></p>
-                <a (click)="delete()" style="position: absolute;bottom:.5rem;right:.5rem;margin: 0" class="has-text-weight-semibold has-text-danger">Eliminar</a>
+                <a *ngIf="!admin && !order" (click)="delete()" style="position: absolute;bottom:.5rem;right:.5rem;margin: 0" class="has-text-weight-semibold has-text-danger">Eliminar</a>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-        .only-1-line{ 
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            margin-bottom: 0!important
-        } 
-    </style>
+    .only-1-line{ 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0!important
+    } 
+</style>

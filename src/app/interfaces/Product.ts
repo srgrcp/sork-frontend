@@ -1,4 +1,4 @@
-export interface Product {
+interface Product {
     _id?: string
     description: string
     ref: string
@@ -17,3 +17,13 @@ export interface Product {
     slide?: { _id?: string, url?: string }
     sizes?: Number[]
 }
+
+interface Slide {
+    _id?: string
+    url: string //image
+    ref?: string
+    description: string
+    product?: { _id: String, description: String }
+}
+
+export { Product, Slide }
