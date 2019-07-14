@@ -35,7 +35,16 @@ export class ProductService {
         return this.http.post(`${this.API_URI}/store/update-order`, { token: UserService.token, _id, state, note })
     }
 
+    cancelOrder(order: Order) {
+        return this.http.post(`${this.API_URI}/store/cancel-order`, { shortid: order.shortid })
+    }
+
     getCart():Observable<Cart>{
+        if (this.cart.items.length != 0) this.http.post<Product[]>(`${this.API_URI}/store/s-products`, {_ids: this.cart.items.map(i => i.product._id)}).subscribe(res => {
+            for (let i = 0; i < this.cart.items.length; i++) {
+                this.cart.items[i].product = res.find(p => p._id == this.cart.items[i].product._id)
+            }
+        })
         return new Observable(observer => {
             observer.next(this.cart)
             this.listeners.push(() => observer.next(this.cart))
@@ -87,6 +96,10 @@ export class ProductService {
         return this.http.get<Product[]>(`${this.API_URI}/store/products${query}`)
     }
 
+    topProducts():Observable<Product[]>{
+        return this.http.get<Product[]>(`${this.API_URI}/store/topproducts`)
+    }
+
     getFormData(product: Product, files: any[], slide?: File){
         const formData: FormData = new FormData()
         formData.append('data', JSON.stringify(product))
@@ -114,8 +127,8 @@ export class ProductService {
         return this.http.post<String>(`${this.API_URI}/store/update-product`, formData, headers)
     }
 
-    getSlides():Observable<Slide[]>{
-        return this.http.get<Slide[]>(`${this.API_URI}/store/slides`)
+    getSlides():Observable<any[]>{
+        return this.http.get<any[]>(`${this.API_URI}/store/slides`)
     }
 
     getData(query?){

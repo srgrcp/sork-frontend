@@ -15,7 +15,7 @@
             <div class="column">
                 <div class="field">
                     <div class="select">
-                        <select [disabled]="order.state==5" (change)="updateOrder()" [(ngModel)]="order.state" name="state">
+                        <select [disabled]="order.state>4" (change)="updateOrder()" [(ngModel)]="order.state" name="state">
                             <option value="0">Pendiente</option>
                             <option value="1">Completado</option>
                             <option value="2">En Camino</option>

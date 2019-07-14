@@ -11,22 +11,13 @@
             </div>
             <div class="column is-one-quarter">
                 <div class="has-background-white">
-                    <!--<div class="tabs is-small is-fullwidth">
-                        <ul>
-                            <li [class.is-active]="!tabPayu">
-                                <a (click)="tabPayu = 0">Contra entrega</a>
-                            </li>
-                            <li [class.is-active]="tabPayu">
-                                <a (click)="tabPayu = 1">PayU</a>
-                            </li>
-                        </ul>
-                    </div>-->
+                    <!--
                     <div class="select is-fullwidth">
                         <select [(ngModel)]="tabPayu" name="tab" id="tab" style="border:none;border-radius:0">
                             <option [value]="0">Pago Contra Entrega</option>
                             <option [value]="1">Otros Medios de Pago</option>
                         </select>
-                    </div>
+                    </div>-->
                     <div class="padding-05">
                         <!--FORMULARÍO-COMPARTIDO-->
                         <div class="field">
@@ -102,9 +93,9 @@
                         <p>TOTAL</p><p>{{getTotal() | currency: 'COP': '$ '}}</p>
                     </div>
                 </div>
-                <div class="has-background-white" style="display: flex;justify-content: space-around">
+                <!--<div class="has-background-white" style="display: flex;justify-content: space-around">
                     <div><img src="http://logos.payulatam.com/img/Colombia(2).png" style="max-height: 30px"></div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>

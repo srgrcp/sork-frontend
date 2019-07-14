@@ -20,8 +20,8 @@
                         <td>
                             <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{order.shortid}}</h1>
                             <p>{{order.method==0?'Pago Contra Entrega':'PayU'}}</p><br>
-                            <a>Enviar Mensaje</a><br>
-                            <a class="has-text-danger">Cancelar Pedido</a>
+                            <!--<a>Enviar Mensaje</a>--><br>
+                            <a *ngIf="order.state == 0 || order.state == 5" (click)="cancelOrder(order)" class="has-text-danger">Cancelar Pedido</a>
                         </td>
                         <td>
                             <span [className]="'tag '+states[order.state].class">{{states[order.state].text}}</span>
@@ -45,3 +45,5 @@
 </div>
 
 <app-footer [brands]="brands" [sections]="sections"></app-footer>
+
+<app-alert></app-alert>

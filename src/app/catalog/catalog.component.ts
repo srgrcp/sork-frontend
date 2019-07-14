@@ -12,6 +12,7 @@ interface Query{
     _id?: String
     description?: String
     sizes?: string
+    colors?: string
     minPrice?: Number
     maxPrice?: Number
     section?: String
@@ -47,9 +48,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
     array: any[]
     arrayMobile: any[]
     arraySizes: any[]
+    arrayColor = []
+    ccolors = Constants.colors
     arrayPages: number[]
     serverData: ServerData
     sizes: number[] = []
+    colors: string[] = []
     filter: boolean = false
     pages: number
     console: string = `'Console'\n`
@@ -72,6 +76,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
         this.renderer.addClass(document.body, 'has-background-light')
         this.console += `oninit\n`
         this.query.description = ''
+        //this.arrayColor = new Array(Constants.colors.length)
+        this.arrayColor = []
+        for (let i = 0; i < this.ccolors.length; i++)
+            this.arrayColor.push({ color: this.ccolors[i], checked: false })
         this.route.paramMap.subscribe((p: Params) => {
             this.query = { description: '' }
             let params = p.params
@@ -130,6 +138,14 @@ export class CatalogComponent implements OnInit, OnDestroy {
         this.query.sizes = ''
         for (let i = 0; i < this.sizes.length; i++)
             this.query.sizes += i==this.sizes.length-1? this.sizes[i]: this.sizes[i]+','
+    }
+
+    colorCheck(n: number, checked: boolean){
+        if (checked) this.colors.push(this.arrayColor[n].color)
+        else this.colors.splice(this.colors.indexOf(this.arrayColor[n].color), 1)
+        this.query.colors = ''
+        for (let i = 0; i < this.colors.length; i++)
+            this.query.colors += i==this.colors.length-1? this.colors[i]: this.colors[i]+','
     }
 
     getArray(){
@@ -347,6 +363,17 @@ export class CatalogComponent implements OnInit, OnDestroy {
                         let n = parseInt(s[i])
                         this.sizes.push(n)
                         this.arraySizes[n-this.serverData.size.min].checked = true
+                    }
+                }
+                for (let i = 0; i < this.arrayColor.length; i++)
+                    this.arrayColor[i] = { color: this.ccolors[i], checked: false }
+                if (this.query.colors){
+                    let c = this.query.colors.split(',')
+                    this.colors = c
+                    console.log(c)
+                    for (let i = 0; i < c.length; i++) {
+                        this.arrayColor[this.arrayColor.findIndex(a => a.color == c[i])].checked = true
+                        
                     }
                 }
                 this.buildPagination()

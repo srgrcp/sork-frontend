@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { ContentService } from 'src/app/Services/content.service'
 import { toast } from 'bulma-toast'
-import { Slide } from 'src/app/interfaces/Product'
+import { Slide, Product } from 'src/app/interfaces/Product'
 import { ProductService } from 'src/app/Services/product.service'
 import { Constants } from 'src/app/Constants';
+import { AlertComponent } from 'src/app/alert/alert.component'
 
 @Component({
     selector: 'app-admin-content',
@@ -18,6 +19,7 @@ export class AdminContentComponent implements OnInit {
     ref: string = ''
     description: string = ''
     slides: Slide[] = []
+    @ViewChild(AlertComponent) alert: AlertComponent
 
     constructor(
         private contentService: ContentService,
@@ -33,7 +35,7 @@ export class AdminContentComponent implements OnInit {
     }
 
     getURL(url: string){
-        return url.startsWith('http')? url: `${Constants.url}/images/${url}`
+        return url.startsWith('http')? url: `${Constants.url}/slides/${url}`
     }
 
     getImage(image: File){
@@ -54,6 +56,7 @@ export class AdminContentComponent implements OnInit {
             if (res == 'ok'){
                 this.slide = undefined
                 this.slideURL = ''
+                this.ref = ''
                 this.description = ''
                 this.getSlides()
             }
@@ -75,6 +78,23 @@ export class AdminContentComponent implements OnInit {
                     animate: { in: 'fadeIn', out: 'fadeOut' }
                 })
             }
+        })
+    }
+
+    productURL(product: Product){
+        let desc = product.description
+        if (desc.length > 50) desc = desc.substr(0, 50)
+        desc = desc.replace(/ /g, '-')
+        return `/Producto/${desc}-${product._id}`
+    }
+
+    deleteSlide(slide: Slide){
+        this.alert.showAlert('Slider', '¿Seguro desea eliminar el slide seleccionado?', next => {
+            this.contentService.deleteSlide(slide._id).subscribe(res => {
+                this.getSlides()
+                /*Poner algo aquí lol*/
+            })
+            next()
         })
     }
 

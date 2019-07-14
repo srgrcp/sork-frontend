@@ -32,7 +32,7 @@
                     style="width: 64px;border-width: 2px"
                     [className]="image.variant?'tooltip is-tooltip-bottom':''"
                     [attr.data-tooltip]="image.variant">
-                    <div *ngIf="image.url != ''" class="srg-image-4-3 notification"
+                    <div *ngIf="image.url != ''" class="srg-image-4-3 notification is-radiusless"
                         [style.background]="'url('+getImage(image.url)+')'"
                         [style.background-position]="'center'"
                         [style.background-size]="'cover'"
@@ -42,9 +42,9 @@
             </div>
         </div>
         <div class="column">
-            <h1 class="title">{{product.brandName}}</h1>
-            <h2 class="subtitle">{{product.description}}</h2><br>
-            <h1 class="title">{{product.price | currency: 'COP': '$ '}}</h1>
+            <h2 class="title">{{product.brandName}}</h2>
+            <h1 class="subtitle">{{product.description}}</h1><br>
+            <h3 class="title">{{product.price | currency: 'COP': '$ '}}</h3>
 
             <div class="field has-addons">
                 <div class="control">
@@ -85,7 +85,7 @@
             </div>
             <div class="buttons are-medium">
                 <button (click)="addCartItem()" class="button is-rounded is-primary is-fullwidth">🛒 Agregar al carrito</button>
-                <button class="button is-rounded is-primary is-outlined is-fullwidth">🏷 Comprar Ahora</button>
+                <button (click)="addCartItem(true)" class="button is-rounded is-primary is-outlined is-fullwidth">🏷 Comprar Ahora</button>
             </div>
             <div class="notification is-warning"><h2 class="subtitle">Compra ahora y paga cuando el producto llegue a tu casa!</h2></div>
         </div>

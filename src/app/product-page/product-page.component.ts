@@ -55,7 +55,7 @@ export class ProductPageComponent implements OnInit {
         })
     }
 
-    addCartItem(){
+    addCartItem(buyNow?: boolean){
         if (this.size == '') {
             toast({
                 message: `Debe seleccionar una talla.`,
@@ -87,7 +87,7 @@ export class ProductPageComponent implements OnInit {
             <div class="container padding">
                 ¡Se ha agregado ${this.product.description} al carrito!.
                 <div class="buttons is-centered" style="margin-top:1rem">
-                    <button type="button" class="button is-white is-rounded">Ir al carrito</button>
+                    <a routerLink="/Carrito" ng-reflect-router-link="/Carrito" href="/Carrito" type="button" class="button is-white is-rounded">Ir al carrito</a>
                 </div>
             </div>
             `,
@@ -100,6 +100,7 @@ export class ProductPageComponent implements OnInit {
         })
         this.size = ''
         this.variant = ''
+        if (buyNow) this.router.navigate(['/Carrito'])
     }
 
     getArray(){

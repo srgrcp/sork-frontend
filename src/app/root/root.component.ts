@@ -3,8 +3,9 @@ import { Title } from '@angular/platform-browser'
 import { Constants } from '../Constants'
 import { ProductService } from '../Services/product.service'
 import { Section } from '../interfaces/Section'
+import { Product } from '../interfaces/Product'
 
-interface Slide{ index?: Number, _id?: String, url: String, product?: { _id: String, description: String }, class?: String }
+interface Slide{ index?: Number, _id?: String, ref: string, description: string, url: String, product?: { _id: String, description: String }, class?: String }
 interface Brand{ _id?:String, name: String }
 
 @Component({
@@ -20,6 +21,9 @@ export class RootComponent implements OnInit {
     firstTime: boolean = true
     sections: Section[] = []
     brands: Brand[] = []
+    products: Product[] = []
+    array: any[] = []
+    arrayMobile: any[] = []
 
     constructor(
         private titleService: Title,
@@ -29,6 +33,12 @@ export class RootComponent implements OnInit {
     ngOnInit() {
         this.titleService.setTitle(`${Constants.title}`)
         this.getSlides()
+        this.getProducts()
+    }
+
+    getArray(){
+        this.array = new Array(Math.ceil(this.products.length/3))
+        this.arrayMobile = new Array(Math.ceil(this.products.length/2))
     }
 
     nextSlide(){
@@ -59,15 +69,29 @@ export class RootComponent implements OnInit {
             for (let i = 0; i < this.slides.length; i++) {
                 this.slides[i].index = i
                 this.slides[i].class = i == 0? 'slider': 'slider visuallyhidden srg-hide'
-                if (this.slides[i].product.description.length > 50) this.slides[i].product.description = this.slides[i].product.description.substr(0, 50)
-                this.slides[i].product.description = this.slides[i].product.description.replace(/ /g, '-')
+                /*if (this.slides[i].product.description.length > 50) this.slides[i].product.description = this.slides[i].product.description.substr(0, 50)
+                this.slides[i].product.description = this.slides[i].product.description.replace(/ /g, '-')*/
             }
             this.slideShow()
         })
     }
 
+    getProducts(){
+        this.productService.topProducts().subscribe(res => {
+            this.products = res
+            this.getArray()
+        })
+    }
+
     getImage(url: string){
-        return url.toLowerCase().startsWith('http')? url: `${Constants.url}/images/${url}`
+        return url.toLowerCase().startsWith('http')? url: `${Constants.url}/slides/${url}`
+    }
+
+    productURL(product){
+        let desc = product.description
+        if (desc.length > 50) desc = desc.substr(0, 50)
+        desc = desc.replace(/ /g, '-')
+        return `/Producto/${desc}-${product._id}`
     }
 
 }

@@ -85,6 +85,24 @@
                         </div>
                     </form>
                     <div class="field">
+                        <label class="label">Color</label>
+                        <div class="srg-box">
+                            <div *ngFor="let c of arrayColor; let i = index"  class="control">
+                                <div class="b-checkbox is-warning is-unselectable">
+                                    <input class="styled" type="checkbox" [(ngModel)]="c.checked" id="{{c.color}}" (change)="colorCheck(i, c.checked)">
+                                    <label for="{{c.color}}">
+                                        <span>{{c.color}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button (click)="getProducts(undefined, true)" class="button is-fullwidth is-rounded is-primary">Aplicar</button>
+                        </div>
+                    </div>
+                    <div class="field">
                         <label class="label">Sección</label>
                         <ul class="menu-list">
                             <li><a [class.is-active]="query.section=='t' || query.section==undefined"
@@ -143,7 +161,7 @@
                 </div>
             </div>
 
-            <div class="buttons is-centered has-addons">
+            <div [class.srg-hide]="pages < 2" class="buttons is-centered has-addons">
                 <button *ngIf="page!=1" (click)="page=page-1;getNewURL(true)" class="button is-rounded">&#171;</button>
                 <button
                     *ngFor="let p of arrayPages"
@@ -179,14 +197,14 @@
     <div [className]="filter?'is-hidden-tablet':'srg-hide'">
         <div style="padding: 0.5rem">
             <h1 class="subtitle">Filtrar por</h1>
-            <form (ngSubmit)="getProducts(undefined, true)">
+            <form (ngSubmit)="getProducts(undefined, true)" class="field">
                 <label class="label" for="search">Buscar</label>
                 <div class="field has-addons">
                     <p class="control" style="width:-webkit-fill-available">
                         <input [(ngModel)]="query.description" name="search" class="input is-light is-rounded" type="text" placeholder="Descripción">
                     </p>
                     <p class="control">
-                        <button type="submit is-light is-rounded" class="button is-color-input">🔍</button>
+                        <button type="submit" class="button is-light is-rounded">🔍</button>
                     </p>
                 </div>
             </form>
@@ -194,7 +212,7 @@
                 <label class="label">Tallas</label>
                 <div class="srg-box">
                     <div *ngFor="let x of arraySizes; let i = index"  class="control">
-                        <div class="b-checkbox is-primary is-unselectable">
+                        <div class="b-checkbox is-warning is-unselectable">
                             <input class="styled" type="checkbox" [(ngModel)]="x.checked" id="size{{i}}" (change)="sizeCheck(i, x.checked)">
                             <label for="size{{i}}">
                                 <span> Talla {{i+serverData.size.min}}</span>
@@ -205,30 +223,48 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <button (click)="getProducts(undefined, true)" class="button is-rounded is-primary">Aplicar</button>
+                    <button (click)="getProducts(undefined, true)" class="button is-fullwidth is-rounded is-primary">Aplicar</button>
                 </div>
             </div>
             <form class="field" (ngSubmit)="getProducts(undefined, true)">
                 <label class="label">Rango de Precios</label>
                 <div class="field has-addons">
-                    <div class="control is-light is-rounded" style="width:-webkit-fill-available">
-                        <input [(ngModel)]="query.minPrice" class="input" type="number" name="minprice" placeholder="Mínimo">
+                    <div class="control" style="width:-webkit-fill-available">
+                        <input [(ngModel)]="query.minPrice" class="input is-light is-rounded" type="number" name="minprice" placeholder="Mínimo">
                     </div>
                     <div class="control">
                         <a class="button is-static input-color is-borderless">
                         -
                         </a>
                     </div>
-                    <div class="control is-light is-rounded" style="width:-webkit-fill-available">
-                        <input [(ngModel)]="query.maxPrice" class="input" type="number" name="maxprice" placeholder="Máximo">
+                    <div class="control" style="width:-webkit-fill-available">
+                        <input [(ngModel)]="query.maxPrice" class="input is-light is-rounded" type="number" name="maxprice" placeholder="Máximo">
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
-                        <button class="button is-rounded is-primary" type="submit">Aplicar</button>
+                        <button class="button is-fullwidth is-rounded is-primary" type="submit">Aplicar</button>
                     </div>
                 </div>
             </form>
+            <div class="field">
+                <label class="label">Color</label>
+                <div class="srg-box">
+                    <div *ngFor="let c of arrayColor; let i = index"  class="control">
+                        <div class="b-checkbox is-warning is-unselectable">
+                            <input class="styled" type="checkbox" [(ngModel)]="c.checked" id="{{c.color}}" (change)="colorCheck(i, c.checked)">
+                            <label for="{{c.color}}">
+                                <span>{{c.color}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button (click)="getProducts(undefined, true)" class="button is-fullwidth is-rounded is-primary">Aplicar</button>
+                </div>
+            </div>
             <div class="field">
                 <label class="label">Sección</label>
                 <ul class="menu-list">
@@ -275,7 +311,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <button (click)="getProducts(undefined, true)" class="button is-rounded is-primary">Aplicar</button>
+                    <button (click)="getProducts(undefined, true)" class="button is-fullwidth is-rounded is-primary">Aplicar</button>
                 </div>
             </div>
         </div>

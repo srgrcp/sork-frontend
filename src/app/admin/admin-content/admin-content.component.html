@@ -34,7 +34,7 @@
                 <div class="field">
                     <label class="label" for="ref">URL</label>
                     <div class="control">
-                        <input [(ngModel)]="ref" class="input" name="ref" id="ref" type="text" placeholder="https://...">
+                        <input [(ngModel)]="ref" class="input" name="ref" id="ref" type="text" placeholder="/...">
                     </div>
                 </div>
                 <div class="field">
@@ -50,11 +50,30 @@
         </div>
         <!--EDITAR-SLIDES-->
         <div class="column">
-            <div *ngFor="let slide of slides">
+            <div *ngFor="let slide of slides" class="card srg-btm">
                 <img [src]="getURL(slide.url)">
+                <div class="card-content">
+                    <a class="only-1-line" [routerLink]="slide.product? productURL(slide.product):slide.ref">{{slide.product? productURL(slide.product):slide.ref}}</a>
+                </div>
+                <div class="card-footer">
+                    <a (click)="deleteSlide(slide)" class="card-footer-item has-text-dark has-text-weight-semibold">Eliminar</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div [class.srg-hide]="content!=1" class="container"></div>
+<div [class.srg-hide]="contentIndex!=1" class="container"></div>
+
+<style>
+    .only-1-line{ 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0!important
+    } 
+</style>
+
+<app-alert></app-alert>

@@ -24,7 +24,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CartComponent } from './cart/cart.component';
-import { ProductRowComponent } from './Cart/product-row/product-row.component';
+import { ProductRowComponent } from './cart/product-row/product-row.component';
 import { AdminOrderListComponent } from './admin/admin-order-list/admin-order-list.component';
 import { AdminOrderDetailComponent } from './admin/admin-order-list/admin-order-detail/admin-order-detail.component';
 import { OrdersComponent } from './orders/orders.component';
