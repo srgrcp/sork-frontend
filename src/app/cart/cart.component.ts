@@ -2,7 +2,9 @@ import { Component, OnInit, Renderer2, OnDestroy, ViewChild, ElementRef } from '
 import { ProductService } from '../Services/product.service'
 import { Cart, Item, BuyerInfo, Order } from '../interfaces/Cart'
 import { toast } from 'bulma-toast'
-import { Constants } from '../Constants';
+import { Constants } from '../Constants'
+
+declare const fbq: any
 
 @Component({
     selector: 'app-cart',
@@ -127,6 +129,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
 
     checkout(){
+        fbq('track', 'Purchase')
         if (!this.valid()) return
         this.waitCheckout = true
         toast({

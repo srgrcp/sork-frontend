@@ -17,6 +17,7 @@ export class OrdersComponent implements OnInit {
     states = States
     page = 1
     @ViewChild(AlertComponent) alert: AlertComponent
+    shortid: string = ''
 
     constructor(private productService: ProductService) { }
 
@@ -24,7 +25,23 @@ export class OrdersComponent implements OnInit {
         this.getOrders()
     }
 
+    addOrder(){
+        this.productService.getOrders(this.page, { shortid: this.shortid }).subscribe(res => {
+            if (res.length != 0) {
+                console.log(res)
+                if (this.orders_id.includes(res[0]._id)) return
+                this.orders_id = this.orders_id != undefined?
+                [ res[0]._id, ...this.orders_id ]: this.orders_id = [res[0]._id]
+                this.orders = [ ...res, ...this.orders ]
+                localStorage.setItem('orders', JSON.stringify(this.orders_id))
+                this.shortid = ''
+                //window.location.reload()
+            }
+        })
+    }
+
     getOrders(){
+        if (this.orders_id == undefined) this.orders_id = []
         this.productService.getOrders(this.page, { _id: { '$in': this.orders_id } }).subscribe(res => {
             this.orders = res
         })

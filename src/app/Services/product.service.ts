@@ -28,7 +28,7 @@ export class ProductService {
 
     getOrders(page: number, query?: any):Observable<Order[]>{
         return query == undefined? this.http.get<Order[]>(`${this.API_URI}/store/orders/${page}`):
-            this.http.post<Order[]>(`${this.API_URI}/store/orders/${page}`, query)
+            this.http.post<Order[]>(`${this.API_URI}/store/orders/${page}`, {query})
     }
 
     updateOrder(_id: string, state: number, note: string){

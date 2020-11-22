@@ -10,6 +10,7 @@ import { toast } from 'bulma-toast'
 import { Cart, Item } from '../interfaces/Cart'
 
 interface Brand{ _id?:String, name: String }
+declare const fbq: any
 
 @Component({
     selector: 'app-product-page',
@@ -46,6 +47,7 @@ export class ProductPageComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        fbq('track', 'ViewContent')
         this.url = this.router.url.split('#')[0]
         this.route.paramMap.subscribe((param: Params) => {
             let p = param.params
@@ -56,6 +58,7 @@ export class ProductPageComponent implements OnInit {
     }
 
     addCartItem(buyNow?: boolean){
+        fbq('track', 'AddToCart')
         if (this.size == '') {
             toast({
                 message: `Debe seleccionar una talla.`,
@@ -82,7 +85,7 @@ export class ProductPageComponent implements OnInit {
         this.quantity = this.quantity < 1? 1: this.quantity > this.max? this.max: this.quantity
         if (this.variant == '') this.productService.addCartItem({ product: this.product, size: this.size, quantity: this.quantity })
         else this.productService.addCartItem({ product: this.product, size: this.size, variant: this.variant, quantity: this.quantity })
-        toast({
+        if (!buyNow) toast({
             message: `
             <div class="container padding">
                 ¡Se ha agregado ${this.product.description} al carrito!.

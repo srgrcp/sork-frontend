@@ -1,9 +1,9 @@
 export const Constants = {
     max_product_per_client: 10,
     title: 'sork',
-    payu_url: 'http://181.192.251.153:3000/api/store/confirm-payu',
-    url: 'http://localhost:3000',
-    API_URI: 'http://localhost:3000/api',
+    payu_url: 'http://www.sorkstore.com/api/store/confirm-payu',
+    url: 'http://www.sorkstore.com',
+    API_URI: 'http://www.sorkstore.com/api',
     pageSize: 24,
-    colors: ["Amarillo","Azul","Blanco","Coral","Gris","Marrón","Multicolor","Naranja","Negro","Rojo","Rosa","Verde","Violeta","Café","Fucsia","Lila","Beige","Chocolate","Plateado"]
+    colors: ["Amarillo","Azul","Blanco","Gris","Marrón","Multicolor","Naranja","Negro","Rojo","Rosado","Verde","Violeta","Café","Fucsia","Lila","Beige","Chocolate","Plateado"]
 }

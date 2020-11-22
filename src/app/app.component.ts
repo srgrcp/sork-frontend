@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, Renderer2 } from '@angular/core'
 import { UserService } from './Services/auth.service'
 import { Meta } from '@angular/platform-browser'
 
+declare const fbq: any
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -20,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(){
+        fbq('track', 'PageView')
         this.userServices.onInit()
         this.meta.addTag({ name: 'theme-color', content: '#4a2d92' })
         console.log('app oninit')

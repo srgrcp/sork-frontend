@@ -2,6 +2,19 @@
 
 <div class="section">
     <div class="container">
+        <form (ngSubmit)="addOrder()">
+            <div class="field">
+                <label class="label" for="shortid">Agregar Pedido</label>
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input [(ngModel)]="shortid" class="input" id="shortid" name="shortid" type="text">
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary" [disabled]="shortid==''">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div style="width:100%;overflow:auto">
             <table class="table is-fullwidth is-hoverable" style="min-width:950px">
                 <thead>
@@ -18,7 +31,7 @@
                 <tbody>
                     <tr *ngFor="let order of orders">
                         <td>
-                            <h1 class="has-text-weight-semibold is-uppercase only-1-line">{{order.shortid}}</h1>
+                            <h1 class="has-text-weight-semibold only-1-line">{{order.shortid}}</h1>
                             <p>{{order.method==0?'Pago Contra Entrega':'PayU'}}</p><br>
                             <!--<a>Enviar Mensaje</a>--><br>
                             <a *ngIf="order.state == 0 || order.state == 5" (click)="cancelOrder(order)" class="has-text-danger">Cancelar Pedido</a>

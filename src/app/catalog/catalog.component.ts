@@ -22,6 +22,7 @@ interface Query{
 }
 interface ServerData{ size: { min: number, max: number }, count: number }
 interface Subcategory{ _id?:String, name: String }
+declare const fbq: any
 
 @Component({
     selector: 'app-catalog',
@@ -73,6 +74,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        fbq('track', 'Search')
         this.renderer.addClass(document.body, 'has-background-light')
         this.console += `oninit\n`
         this.query.description = ''

@@ -3,8 +3,24 @@
 <div class="container" style="line-height:0">
     <div class="slider-container">
         <a *ngFor="let slide of slides" [className]="slide.class" [routerLink]="slide.product? productURL(slide.product):slide.ref">
-            <img src="{{getImage(slide.url)}}" style="width:100%">
+            <img src="{{getImage(slide.url)}}" [alt]="slide.description" style="width:100%">
         </a>
+    </div>
+</div>
+
+<div class="container">
+    <h1 class="subtitle has-text-weight-semibold" style="margin-top:1.5rem">Productos Destacados</h1>
+    <div class="slider-container">
+        <div *ngFor="let x of array;  let i = index" class="columns is-hidden-mobile">
+            <div *ngFor="let product of products.slice(i*3, i*3+3)" class="column is-one-third">
+                <a [routerLink]="productURL(product)"><app-product-tile [product]="product"></app-product-tile></a>
+            </div>
+        </div>
+        <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
+            <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
+                    <a [routerLink]="productURL(product)"><app-product-tile [product]="product"></app-product-tile></a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -28,23 +44,7 @@
 </div>
 
 <div class="container">
-    <h1 class="subtitle has-text-weight-semibold" style="margin-top:1.5rem">Productos Destacados</h1>
-    <div class="slider-container">
-        <div *ngFor="let x of array;  let i = index" class="columns is-hidden-mobile">
-            <div *ngFor="let product of products.slice(i*3, i*3+3)" class="column is-one-third">
-                <a [routerLink]="productURL(product)"><app-product-tile [product]="product"></app-product-tile></a>
-            </div>
-        </div>
-        <div *ngFor="let x of arrayMobile;  let i = index" class="columns is-mobile is-hidden-tablet">
-            <div *ngFor="let product of products.slice(i*2, i*2+2)" class="column is-half">
-                    <a [routerLink]="productURL(product)"><app-product-tile [product]="product"></app-product-tile></a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="parallax">
+    <div class="srg-bg1" style="background-image: url('https://cnnespanol2.files.wordpress.com/2019/03/adidas-got-uno.jpg');background-position: center;background-size: cover">
         <div class="has-text-centered padding">
             <div class="has-background-grey padding container" style="max-width: 500px"><p class="subtitle has-text-light">Encuentra el mejor calzado de Barranquilla a precios insuperables, con envío gratis y pago contra entrega.</p></div>
         </div>
